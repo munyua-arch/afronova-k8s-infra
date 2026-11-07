@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: afronova-pos-production
+  namespace: afronova
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+spec:
+  ingressClassName: traefik
+  rules:
+    - host: pos.afronova.co.ke
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: afronova-frontend-svc
+                port:
+                  number: 80
+  tls:
+    - hosts:
+        - pos.afronova.co.ke
+      secretName: afronova-pos-production-tls

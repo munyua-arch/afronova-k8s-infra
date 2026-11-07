@@ -1,0 +1,123 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: afronova-queue-worker
+  namespace: afronova
+  labels:
+    app: afronova-queue-worker
+
+spec:
+  replicas: 1
+
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
+
+  selector:
+    matchLabels:
+      app: afronova-queue-worker
+
+  template:
+    metadata:
+      labels:
+        app: afronova-queue-worker
+
+    spec:
+      # Lets a job in progress finish before the pod is killed.
+      terminationGracePeriodSeconds: 60
+
+      imagePullSecrets:
+        - name: munyua-arch-ghcr-secret
+
+      containers:
+        - name: afronova-queue-worker
+          image: ghcr.io/munyua-arch/afronova-backend:v1.5.1
+          imagePullPolicy: Always
+
+          # --max-time makes the worker exit cleanly every hour; Kubernetes
+          # restarts it, which picks up new code and clears memory growth.
+          command: ["php", "artisan", "queue:work", "--tries=3", "--sleep=3", "--max-time=3600"]
+
+          env:
+            - name: APP_ENV
+              value: "production"
+
+            - name: APP_DEBUG
+              value: "false"
+
+            - name: APP_URL
+              value: "https://pos.afronova.co.ke"
+
+            - name: APP_FRONTEND_URL
+              value: "https://pos.afronova.co.ke"
+
+            - name: APP_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: afronova-backend-secret
+                  key: APP_KEY
+
+            - name: LOG_CHANNEL
+              value: "stderr"
+
+            - name: LOG_LEVEL
+              value: "info"
+
+            - name: MAIL_MAILER
+              value: "resend"
+
+            - name: MAIL_FROM_ADDRESS
+              value: "noreply@afronova.co.ke"
+
+            - name: MAIL_FROM_NAME
+              value: "AfroNova"
+
+            - name: RESEND_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: afronova-backend-secret
+                  key: RESEND_API_KEY
+
+            - name: DB_CONNECTION
+              value: "pgsql"
+
+            - name: DB_HOST
+              value: "afronova-postgres"
+
+            - name: DB_PORT
+              value: "5432"
+
+            - name: DB_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: afronova-postgres-secret
+                  key: POSTGRES_DB
+
+            - name: DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: afronova-postgres-secret
+                  key: POSTGRES_USER
+
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: afronova-postgres-secret
+                  key: POSTGRES_PASSWORD
+
+            - name: CACHE_STORE
+              value: "database"
+
+            - name: QUEUE_CONNECTION
+              value: "database"
+
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+            limits:
+              memory: "256Mi"
+              cpu: "250m"

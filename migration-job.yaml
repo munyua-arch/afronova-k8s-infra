@@ -1,0 +1,99 @@
+apiVersion: batch/v1
+kind: Job
+
+metadata:
+  name: afronova-migration
+  namespace: afronova
+
+spec:
+  backoffLimit: 3
+
+  template:
+    spec:
+      restartPolicy: Never
+
+      imagePullSecrets:
+        - name: munyua-arch-ghcr-secret
+
+      containers:
+        - name: migrate
+          image: ghcr.io/munyua-arch/afronova-backend:v1.5.1
+
+          command:
+            - php
+            - artisan
+            - migrate
+            - --force
+
+          env:
+            - name: APP_ENV
+              value: "staging"
+
+            - name: APP_DEBUG
+              value: "false"
+
+            - name: APP_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: afronova-backend-secret
+                  key: APP_KEY
+
+            - name: APP_URL
+              value: "https://pos.afronova.co.ke"
+
+            - name: APP_FRONTEND_URL
+              value: "https://pos.afronova.co.ke"
+
+            - name: DB_CONNECTION
+              value: "pgsql"
+
+            - name: DB_HOST
+              value: "afronova-postgres"
+
+            - name: DB_PORT
+              value: "5432"
+
+            - name: DB_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: afronova-postgres-secret
+                  key: POSTGRES_DB
+
+            - name: DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: afronova-postgres-secret
+                  key: POSTGRES_USER
+
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: afronova-postgres-secret
+                  key: POSTGRES_PASSWORD
+
+            - name: SESSION_DRIVER
+              value: "database"
+
+            - name: SESSION_DOMAIN
+              value: "pos.afronova.co.ke"
+
+            - name: SESSION_SECURE_COOKIE
+              value: "true"
+
+            - name: SESSION_LIFETIME
+              value: "120"
+
+            - name: SESSION_ENCRYPT
+              value: "false"
+
+            - name: SESSION_PATH
+              value: "/"
+
+            - name: SANCTUM_STATEFUL_DOMAINS
+              value: "pos.afronova.co.ke"
+
+            - name: CACHE_STORE
+              value: "database"
+
+            - name: QUEUE_CONNECTION
+              value: "database"

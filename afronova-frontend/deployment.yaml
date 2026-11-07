@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: afronova-frontend
+  namespace: afronova
+  labels:
+    app: afronova-frontend
+
+spec:
+  replicas: 1
+
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
+
+  selector:
+    matchLabels:
+      app: afronova-frontend
+
+  template:
+    metadata:
+      labels:
+        app: afronova-frontend
+
+    spec:
+      imagePullSecrets:
+        - name: munyua-arch-ghcr-secret
+
+      containers:
+        - name: afronova-frontend
+          image: ghcr.io/munyua-arch/afronova-frontend:v1.5.1
+          imagePullPolicy: Always
+
+          ports:
+            - name: http
+              containerPort: 80
+
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+            limits:
+              memory: "256Mi"
+              cpu: "250m"
+
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 10
+
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+            initialDelaySeconds: 20
+            periodSeconds: 20

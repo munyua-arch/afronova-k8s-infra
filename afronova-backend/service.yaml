@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: afronova-backend-svc
+  namespace: afronova
+spec:
+  type: ClusterIP
+  selector:
+    app: afronova-backend
+  ports:
+    - name: http
+      port: 80
+      targetPort: 80

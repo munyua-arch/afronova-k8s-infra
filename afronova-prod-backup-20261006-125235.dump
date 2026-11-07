@@ -1,0 +1,3090 @@
+--
+-- PostgreSQL database dump
+--
+
+\restrict Y52HQDExLGXfJiwhRhUqynhEmA1szcLiZpP2bFJYgEaG4qf7f6PEWxbSgLXOP9Y
+
+-- Dumped from database version 17.11 (Debian 17.11-1.pgdg13+2)
+-- Dumped by pg_dump version 17.11 (Debian 17.11-1.pgdg13+2)
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET transaction_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
+
+--
+-- Name: branch_user; Type: TABLE; Schema: public; Owner: afronovapos
+--
+
+CREATE TABLE public.branch_user (
+    id bigint NOT NULL,
+    user_id bigint NOT NULL,
+    branch_id bigint NOT NULL,
+    created_at timestamp(0) without time zone,
+    updated_at timestamp(0) without time zone
+);
+
+
+ALTER TABLE public.branch_user OWNER TO afronovapos;
+
+--
+-- Name: branch_user_id_seq; Type: SEQUENCE; Schema: public; Owner: afronovapos
+--
+
+CREATE SEQUENCE public.branch_user_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.branch_user_id_seq OWNER TO afronovapos;
+
+--
+-- Name: branch_user_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: afronovapos
+--
+
+ALTER SEQUENCE public.branch_user_id_seq OWNED BY public.branch_user.id;
+
+
+--
+-- Name: branches; Type: TABLE; Schema: public; Owner: afronovapos
+--
+
+CREATE TABLE public.branches (
+    id bigint NOT NULL,
+    tenant_id bigint NOT NULL,
+    name character varying(100) NOT NULL,
+    code character varying(30) NOT NULL,
+    phone character varying(30),
+    address text,
+    is_active boolean DEFAULT true NOT NULL,
+    created_at timestamp(0) without time zone,
+    updated_at timestamp(0) without time zone
+);
+
+
+ALTER TABLE public.branches OWNER TO afronovapos;
+
+--
+-- Name: branches_id_seq; Type: SEQUENCE; Schema: public; Owner: afronovapos
+--
+
+CREATE SEQUENCE public.branches_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.branches_id_seq OWNER TO afronovapos;
+
+--
+-- Name: branches_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: afronovapos
+--
+
+ALTER SEQUENCE public.branches_id_seq OWNED BY public.branches.id;
+
+
+--
+-- Name: cache; Type: TABLE; Schema: public; Owner: afronovapos
+--
+
+CREATE TABLE public.cache (
+    key character varying(255) NOT NULL,
+    value text NOT NULL,
+    expiration bigint NOT NULL
+);
+
+
+ALTER TABLE public.cache OWNER TO afronovapos;
+
+--
+-- Name: cache_locks; Type: TABLE; Schema: public; Owner: afronovapos
+--
+
+CREATE TABLE public.cache_locks (
+    key character varying(255) NOT NULL,
+    owner character varying(255) NOT NULL,
+    expiration bigint NOT NULL
+);
+
+
+ALTER TABLE public.cache_locks OWNER TO afronovapos;
+
+--
+-- Name: categories; Type: TABLE; Schema: public; Owner: afronovapos
+--
+
+CREATE TABLE public.categories (
+    id bigint NOT NULL,
+    tenant_id bigint NOT NULL,
+    name character varying(100) NOT NULL,
+    description text,
+    is_active boolean DEFAULT true NOT NULL,
+    created_at timestamp(0) without time zone,
+    updated_at timestamp(0) without time zone
+);
+
+
+ALTER TABLE public.categories OWNER TO afronovapos;
+
+--
+-- Name: categories_id_seq; Type: SEQUENCE; Schema: public; Owner: afronovapos
+--
+
+CREATE SEQUENCE public.categories_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.categories_id_seq OWNER TO afronovapos;
+
+--
+-- Name: categories_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: afronovapos
+--
+
+ALTER SEQUENCE public.categories_id_seq OWNED BY public.categories.id;
+
+
+--
+-- Name: customer_prices; Type: TABLE; Schema: public; Owner: afronovapos
+--
+
+CREATE TABLE public.customer_prices (
+    id bigint NOT NULL,
+    tenant_id bigint NOT NULL,
+    customer_id bigint NOT NULL,
+    product_id bigint NOT NULL,
+    price numeric(12,2) NOT NULL,
+    created_at timestamp(0) without time zone,
+    updated_at timestamp(0) without time zone
+);
+
+
+ALTER TABLE public.customer_prices OWNER TO afronovapos;
+
+--
+-- Name: customer_prices_id_seq; Type: SEQUENCE; Schema: public; Owner: afronovapos
+--
+
+CREATE SEQUENCE public.customer_prices_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.customer_prices_id_seq OWNER TO afronovapos;
+
+--
+-- Name: customer_prices_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: afronovapos
+--
+
+ALTER SEQUENCE public.customer_prices_id_seq OWNED BY public.customer_prices.id;
+
+
+--
+-- Name: customers; Type: TABLE; Schema: public; Owner: afronovapos
+--
+
+CREATE TABLE public.customers (
+    id bigint NOT NULL,
+    tenant_id bigint NOT NULL,
+    name character varying(150) NOT NULL,
+    phone character varying(30),
+    email character varying(150),
+    address text,
+    credit_limit numeric(12,2) DEFAULT '0'::numeric NOT NULL,
+    is_active boolean DEFAULT true NOT NULL,
+    created_at timestamp(0) without time zone,
+    updated_at timestamp(0) without time zone
+);
+
+
+ALTER TABLE public.customers OWNER TO afronovapos;
+
+--
+-- Name: customers_id_seq; Type: SEQUENCE; Schema: public; Owner: afronovapos
+--
+
+CREATE SEQUENCE public.customers_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.customers_id_seq OWNER TO afronovapos;
+
+--
+-- Name: customers_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: afronovapos
+--
+
+ALTER SEQUENCE public.customers_id_seq OWNED BY public.customers.id;
+
+
+--
+-- Name: expenses; Type: TABLE; Schema: public; Owner: afronovapos
+--
+
+CREATE TABLE public.expenses (
+    id bigint NOT NULL,
+    tenant_id bigint NOT NULL,
+    branch_id bigint,
+    category character varying(255) NOT NULL,
+    amount numeric(12,2) NOT NULL,
+    description character varying(255) NOT NULL,
+    payment_method character varying(255) NOT NULL,
+    reference character varying(255),
+    paid_at timestamp(0) without time zone NOT NULL,
+    recorded_by bigint NOT NULL,
+    is_recurring boolean DEFAULT false NOT NULL,
+    recurrence_frequency character varying(255),
+    created_at timestamp(0) without time zone,
+    updated_at timestamp(0) without time zone
+);
+
+
+ALTER TABLE public.expenses OWNER TO afronovapos;
+
+--
+-- Name: expenses_id_seq; Type: SEQUENCE; Schema: public; Owner: afronovapos
+--
+
+CREATE SEQUENCE public.expenses_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.expenses_id_seq OWNER TO afronovapos;
+
+--
+-- Name: expenses_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: afronovapos
+--
+
+ALTER SEQUENCE public.expenses_id_seq OWNED BY public.expenses.id;
+
+
+--
+-- Name: failed_jobs; Type: TABLE; Schema: public; Owner: afronovapos
+--
+
+CREATE TABLE public.failed_jobs (
+    id bigint NOT NULL,
+    uuid character varying(255) NOT NULL,
+    connection character varying(255) NOT NULL,
+    queue character varying(255) NOT NULL,
+    payload text NOT NULL,
+    exception text NOT NULL,
+    failed_at timestamp(0) without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL
+);
+
+
+ALTER TABLE public.failed_jobs OWNER TO afronovapos;
+
+--
+-- Name: failed_jobs_id_seq; Type: SEQUENCE; Schema: public; Owner: afronovapos
+--
+
+CREATE SEQUENCE public.failed_jobs_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.failed_jobs_id_seq OWNER TO afronovapos;
+
+--
+-- Name: failed_jobs_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: afronovapos
+--
+
+ALTER SEQUENCE public.failed_jobs_id_seq OWNED BY public.failed_jobs.id;
+
+
+--
+-- Name: held_sales; Type: TABLE; Schema: public; Owner: afronovapos
+--
+
+CREATE TABLE public.held_sales (
+    id bigint NOT NULL,
+    tenant_id bigint NOT NULL,
+    branch_id bigint NOT NULL,
+    customer_id bigint,
+    held_by bigint NOT NULL,
+    label character varying(100),
+    items json NOT NULL,
+    subtotal numeric(12,2) NOT NULL,
+    discount numeric(12,2) DEFAULT '0'::numeric NOT NULL,
+    tax numeric(12,2) DEFAULT '0'::numeric NOT NULL,
+    total numeric(12,2) NOT NULL,
+    created_at timestamp(0) without time zone,
+    updated_at timestamp(0) without time zone
+);
+
+
+ALTER TABLE public.held_sales OWNER TO afronovapos;
+
+--
+-- Name: held_sales_id_seq; Type: SEQUENCE; Schema: public; Owner: afronovapos
+--
+
+CREATE SEQUENCE public.held_sales_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.held_sales_id_seq OWNER TO afronovapos;
+
+--
+-- Name: held_sales_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: afronovapos
+--
+
+ALTER SEQUENCE public.held_sales_id_seq OWNED BY public.held_sales.id;
+
+
+--
+-- Name: job_batches; Type: TABLE; Schema: public; Owner: afronovapos
+--
+
+CREATE TABLE public.job_batches (
+    id character varying(255) NOT NULL,
+    name character varying(255) NOT NULL,
+    total_jobs integer NOT NULL,
+    pending_jobs integer NOT NULL,
+    failed_jobs integer NOT NULL,
+    failed_job_ids text NOT NULL,
+    options text,
+    cancelled_at integer,
+    created_at integer NOT NULL,
+    finished_at integer
+);
+
+
+ALTER TABLE public.job_batches OWNER TO afronovapos;
+
+--
+-- Name: jobs; Type: TABLE; Schema: public; Owner: afronovapos
+--
+
+CREATE TABLE public.jobs (
+    id bigint NOT NULL,
+    queue character varying(255) NOT NULL,
+    payload text NOT NULL,
+    attempts smallint NOT NULL,
+    reserved_at integer,
+    available_at integer NOT NULL,
+    created_at integer NOT NULL
+);
+
+
+ALTER TABLE public.jobs OWNER TO afronovapos;
+
+--
+-- Name: jobs_id_seq; Type: SEQUENCE; Schema: public; Owner: afronovapos
+--
+
+CREATE SEQUENCE public.jobs_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.jobs_id_seq OWNER TO afronovapos;
+
+--
+-- Name: jobs_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: afronovapos
+--
+
+ALTER SEQUENCE public.jobs_id_seq OWNED BY public.jobs.id;
+
+
+--
+-- Name: migrations; Type: TABLE; Schema: public; Owner: afronovapos
+--
+
+CREATE TABLE public.migrations (
+    id integer NOT NULL,
+    migration character varying(255) NOT NULL,
+    batch integer NOT NULL
+);
+
+
+ALTER TABLE public.migrations OWNER TO afronovapos;
+
+--
+-- Name: migrations_id_seq; Type: SEQUENCE; Schema: public; Owner: afronovapos
+--
+
+CREATE SEQUENCE public.migrations_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.migrations_id_seq OWNER TO afronovapos;
+
+--
+-- Name: migrations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: afronovapos
+--
+
+ALTER SEQUENCE public.migrations_id_seq OWNED BY public.migrations.id;
+
+
+--
+-- Name: order_items; Type: TABLE; Schema: public; Owner: afronovapos
+--
+
+CREATE TABLE public.order_items (
+    id bigint NOT NULL,
+    order_id bigint NOT NULL,
+    product_id bigint NOT NULL,
+    product_name character varying(255) NOT NULL,
+    quantity integer NOT NULL,
+    unit_price numeric(12,2) NOT NULL,
+    subtotal numeric(12,2) NOT NULL,
+    created_at timestamp(0) without time zone,
+    updated_at timestamp(0) without time zone
+);
+
+
+ALTER TABLE public.order_items OWNER TO afronovapos;
+
+--
+-- Name: order_items_id_seq; Type: SEQUENCE; Schema: public; Owner: afronovapos
+--
+
+CREATE SEQUENCE public.order_items_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.order_items_id_seq OWNER TO afronovapos;
+
+--
+-- Name: order_items_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: afronovapos
+--
+
+ALTER SEQUENCE public.order_items_id_seq OWNED BY public.order_items.id;
+
+
+--
+-- Name: orders; Type: TABLE; Schema: public; Owner: afronovapos
+--
+
+CREATE TABLE public.orders (
+    id bigint NOT NULL,
+    tenant_id bigint NOT NULL,
+    branch_id bigint NOT NULL,
+    customer_id bigint,
+    customer_name character varying(255),
+    customer_phone character varying(255),
+    delivery_location character varying(255),
+    status character varying(20) DEFAULT 'pending'::character varying NOT NULL,
+    subtotal numeric(12,2) NOT NULL,
+    amount_paid numeric(12,2) DEFAULT '0'::numeric NOT NULL,
+    notes text,
+    placed_by bigint NOT NULL,
+    sale_id bigint,
+    fulfilled_at timestamp(0) without time zone,
+    created_at timestamp(0) without time zone,
+    updated_at timestamp(0) without time zone,
+    pay_on_fulfillment boolean DEFAULT false NOT NULL
+);
+
+
+ALTER TABLE public.orders OWNER TO afronovapos;
+
+--
+-- Name: orders_id_seq; Type: SEQUENCE; Schema: public; Owner: afronovapos
+--
+
+CREATE SEQUENCE public.orders_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.orders_id_seq OWNER TO afronovapos;
+
+--
+-- Name: orders_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: afronovapos
+--
+
+ALTER SEQUENCE public.orders_id_seq OWNED BY public.orders.id;
+
+
+--
+-- Name: password_reset_tokens; Type: TABLE; Schema: public; Owner: afronovapos
+--
+
+CREATE TABLE public.password_reset_tokens (
+    email character varying(255) NOT NULL,
+    token character varying(255) NOT NULL,
+    created_at timestamp(0) without time zone
+);
+
+
+ALTER TABLE public.password_reset_tokens OWNER TO afronovapos;
+
+--
+-- Name: payments; Type: TABLE; Schema: public; Owner: afronovapos
+--
+
+CREATE TABLE public.payments (
+    id bigint NOT NULL,
+    tenant_id bigint NOT NULL,
+    sale_id bigint NOT NULL,
+    customer_id bigint NOT NULL,
+    amount numeric(12,2) NOT NULL,
+    payment_method character varying(30) NOT NULL,
+    reference character varying(100),
+    notes text,
+    received_by bigint NOT NULL,
+    paid_at timestamp(0) without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    created_at timestamp(0) without time zone,
+    updated_at timestamp(0) without time zone
+);
+
+
+ALTER TABLE public.payments OWNER TO afronovapos;
+
+--
+-- Name: payments_id_seq; Type: SEQUENCE; Schema: public; Owner: afronovapos
+--
+
+CREATE SEQUENCE public.payments_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.payments_id_seq OWNER TO afronovapos;
+
+--
+-- Name: payments_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: afronovapos
+--
+
+ALTER SEQUENCE public.payments_id_seq OWNED BY public.payments.id;
+
+
+--
+-- Name: personal_access_tokens; Type: TABLE; Schema: public; Owner: afronovapos
+--
+
+CREATE TABLE public.personal_access_tokens (
+    id bigint NOT NULL,
+    tokenable_type character varying(255) NOT NULL,
+    tokenable_id bigint NOT NULL,
+    name text NOT NULL,
+    token character varying(64) NOT NULL,
+    abilities text,
+    last_used_at timestamp(0) without time zone,
+    expires_at timestamp(0) without time zone,
+    created_at timestamp(0) without time zone,
+    updated_at timestamp(0) without time zone
+);
+
+
+ALTER TABLE public.personal_access_tokens OWNER TO afronovapos;
+
+--
+-- Name: personal_access_tokens_id_seq; Type: SEQUENCE; Schema: public; Owner: afronovapos
+--
+
+CREATE SEQUENCE public.personal_access_tokens_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.personal_access_tokens_id_seq OWNER TO afronovapos;
+
+--
+-- Name: personal_access_tokens_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: afronovapos
+--
+
+ALTER SEQUENCE public.personal_access_tokens_id_seq OWNED BY public.personal_access_tokens.id;
+
+
+--
+-- Name: platform_admins; Type: TABLE; Schema: public; Owner: afronovapos
+--
+
+CREATE TABLE public.platform_admins (
+    id bigint NOT NULL,
+    name character varying(255) NOT NULL,
+    email character varying(255) NOT NULL,
+    password character varying(255) NOT NULL,
+    is_active boolean DEFAULT true NOT NULL,
+    last_login_at timestamp(0) without time zone,
+    created_at timestamp(0) without time zone,
+    updated_at timestamp(0) without time zone
+);
+
+
+ALTER TABLE public.platform_admins OWNER TO afronovapos;
+
+--
+-- Name: platform_admins_id_seq; Type: SEQUENCE; Schema: public; Owner: afronovapos
+--
+
+CREATE SEQUENCE public.platform_admins_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.platform_admins_id_seq OWNER TO afronovapos;
+
+--
+-- Name: platform_admins_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: afronovapos
+--
+
+ALTER SEQUENCE public.platform_admins_id_seq OWNED BY public.platform_admins.id;
+
+
+--
+-- Name: products; Type: TABLE; Schema: public; Owner: afronovapos
+--
+
+CREATE TABLE public.products (
+    id bigint NOT NULL,
+    tenant_id bigint NOT NULL,
+    category_id bigint,
+    name character varying(150) NOT NULL,
+    sku character varying(50) NOT NULL,
+    barcode character varying(100),
+    description text,
+    cost_price numeric(12,2) NOT NULL,
+    selling_price numeric(12,2) NOT NULL,
+    reorder_level numeric(12,3) DEFAULT '0'::numeric NOT NULL,
+    unit character varying(30) DEFAULT 'piece'::character varying NOT NULL,
+    is_active boolean DEFAULT true NOT NULL,
+    created_at timestamp(0) without time zone,
+    updated_at timestamp(0) without time zone,
+    track_stock boolean DEFAULT true NOT NULL
+);
+
+
+ALTER TABLE public.products OWNER TO afronovapos;
+
+--
+-- Name: products_id_seq; Type: SEQUENCE; Schema: public; Owner: afronovapos
+--
+
+CREATE SEQUENCE public.products_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.products_id_seq OWNER TO afronovapos;
+
+--
+-- Name: products_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: afronovapos
+--
+
+ALTER SEQUENCE public.products_id_seq OWNED BY public.products.id;
+
+
+--
+-- Name: receipts; Type: TABLE; Schema: public; Owner: afronovapos
+--
+
+CREATE TABLE public.receipts (
+    id bigint NOT NULL,
+    tenant_id bigint NOT NULL,
+    sale_id bigint NOT NULL,
+    receipt_number character varying(50) NOT NULL,
+    delivery_method character varying(30) NOT NULL,
+    recipient character varying(150),
+    sent_at timestamp(0) without time zone,
+    created_at timestamp(0) without time zone,
+    updated_at timestamp(0) without time zone
+);
+
+
+ALTER TABLE public.receipts OWNER TO afronovapos;
+
+--
+-- Name: receipts_id_seq; Type: SEQUENCE; Schema: public; Owner: afronovapos
+--
+
+CREATE SEQUENCE public.receipts_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.receipts_id_seq OWNER TO afronovapos;
+
+--
+-- Name: receipts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: afronovapos
+--
+
+ALTER SEQUENCE public.receipts_id_seq OWNED BY public.receipts.id;
+
+
+--
+-- Name: sale_items; Type: TABLE; Schema: public; Owner: afronovapos
+--
+
+CREATE TABLE public.sale_items (
+    id bigint NOT NULL,
+    sale_id bigint NOT NULL,
+    product_id bigint NOT NULL,
+    product_name character varying(150) NOT NULL,
+    quantity numeric(12,3) NOT NULL,
+    unit_price numeric(12,2) NOT NULL,
+    discount numeric(12,2) DEFAULT '0'::numeric NOT NULL,
+    subtotal numeric(12,2) NOT NULL,
+    created_at timestamp(0) without time zone,
+    updated_at timestamp(0) without time zone
+);
+
+
+ALTER TABLE public.sale_items OWNER TO afronovapos;
+
+--
+-- Name: sale_items_id_seq; Type: SEQUENCE; Schema: public; Owner: afronovapos
+--
+
+CREATE SEQUENCE public.sale_items_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.sale_items_id_seq OWNER TO afronovapos;
+
+--
+-- Name: sale_items_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: afronovapos
+--
+
+ALTER SEQUENCE public.sale_items_id_seq OWNED BY public.sale_items.id;
+
+
+--
+-- Name: sales; Type: TABLE; Schema: public; Owner: afronovapos
+--
+
+CREATE TABLE public.sales (
+    id bigint NOT NULL,
+    tenant_id bigint NOT NULL,
+    branch_id bigint NOT NULL,
+    customer_id bigint,
+    invoice_number character varying(50) NOT NULL,
+    subtotal numeric(12,2) NOT NULL,
+    discount numeric(12,2) DEFAULT '0'::numeric NOT NULL,
+    tax numeric(12,2) DEFAULT '0'::numeric NOT NULL,
+    total numeric(12,2) NOT NULL,
+    amount_paid numeric(12,2) DEFAULT '0'::numeric NOT NULL,
+    balance numeric(12,2) DEFAULT '0'::numeric NOT NULL,
+    payment_status character varying(20) DEFAULT 'unpaid'::character varying NOT NULL,
+    status character varying(20) DEFAULT 'completed'::character varying NOT NULL,
+    sold_by bigint NOT NULL,
+    sold_at timestamp(0) without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    created_at timestamp(0) without time zone,
+    updated_at timestamp(0) without time zone
+);
+
+
+ALTER TABLE public.sales OWNER TO afronovapos;
+
+--
+-- Name: sales_id_seq; Type: SEQUENCE; Schema: public; Owner: afronovapos
+--
+
+CREATE SEQUENCE public.sales_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.sales_id_seq OWNER TO afronovapos;
+
+--
+-- Name: sales_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: afronovapos
+--
+
+ALTER SEQUENCE public.sales_id_seq OWNED BY public.sales.id;
+
+
+--
+-- Name: sessions; Type: TABLE; Schema: public; Owner: afronovapos
+--
+
+CREATE TABLE public.sessions (
+    id character varying(255) NOT NULL,
+    user_id bigint,
+    ip_address character varying(45),
+    user_agent text,
+    payload text NOT NULL,
+    last_activity integer NOT NULL
+);
+
+
+ALTER TABLE public.sessions OWNER TO afronovapos;
+
+--
+-- Name: stock_movements; Type: TABLE; Schema: public; Owner: afronovapos
+--
+
+CREATE TABLE public.stock_movements (
+    id bigint NOT NULL,
+    tenant_id bigint NOT NULL,
+    branch_id bigint NOT NULL,
+    product_id bigint NOT NULL,
+    type character varying(30) NOT NULL,
+    quantity numeric(12,3) NOT NULL,
+    reference_type character varying(50),
+    reference_id bigint,
+    notes text,
+    created_by bigint,
+    created_at timestamp(0) without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL
+);
+
+
+ALTER TABLE public.stock_movements OWNER TO afronovapos;
+
+--
+-- Name: stock_movements_id_seq; Type: SEQUENCE; Schema: public; Owner: afronovapos
+--
+
+CREATE SEQUENCE public.stock_movements_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.stock_movements_id_seq OWNER TO afronovapos;
+
+--
+-- Name: stock_movements_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: afronovapos
+--
+
+ALTER SEQUENCE public.stock_movements_id_seq OWNED BY public.stock_movements.id;
+
+
+--
+-- Name: stocks; Type: TABLE; Schema: public; Owner: afronovapos
+--
+
+CREATE TABLE public.stocks (
+    id bigint NOT NULL,
+    tenant_id bigint NOT NULL,
+    branch_id bigint NOT NULL,
+    product_id bigint NOT NULL,
+    quantity numeric(12,3) DEFAULT '0'::numeric NOT NULL,
+    reorder_level numeric(12,3) DEFAULT '0'::numeric NOT NULL,
+    created_at timestamp(0) without time zone,
+    updated_at timestamp(0) without time zone
+);
+
+
+ALTER TABLE public.stocks OWNER TO afronovapos;
+
+--
+-- Name: stocks_id_seq; Type: SEQUENCE; Schema: public; Owner: afronovapos
+--
+
+CREATE SEQUENCE public.stocks_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.stocks_id_seq OWNER TO afronovapos;
+
+--
+-- Name: stocks_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: afronovapos
+--
+
+ALTER SEQUENCE public.stocks_id_seq OWNED BY public.stocks.id;
+
+
+--
+-- Name: tenants; Type: TABLE; Schema: public; Owner: afronovapos
+--
+
+CREATE TABLE public.tenants (
+    id bigint NOT NULL,
+    name character varying(150) NOT NULL,
+    slug character varying(150) NOT NULL,
+    business_type character varying(50) NOT NULL,
+    phone character varying(30),
+    email character varying(150),
+    address text,
+    currency character varying(3) DEFAULT 'KES'::character varying NOT NULL,
+    timezone character varying(50) DEFAULT 'Africa/Nairobi'::character varying NOT NULL,
+    status character varying(20) DEFAULT 'active'::character varying NOT NULL,
+    created_at timestamp(0) without time zone,
+    updated_at timestamp(0) without time zone,
+    features json,
+    trial_ends_at timestamp(0) without time zone,
+    deleted_at timestamp(0) without time zone
+);
+
+
+ALTER TABLE public.tenants OWNER TO afronovapos;
+
+--
+-- Name: tenants_id_seq; Type: SEQUENCE; Schema: public; Owner: afronovapos
+--
+
+CREATE SEQUENCE public.tenants_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.tenants_id_seq OWNER TO afronovapos;
+
+--
+-- Name: tenants_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: afronovapos
+--
+
+ALTER SEQUENCE public.tenants_id_seq OWNED BY public.tenants.id;
+
+
+--
+-- Name: users; Type: TABLE; Schema: public; Owner: afronovapos
+--
+
+CREATE TABLE public.users (
+    id bigint NOT NULL,
+    name character varying(255) NOT NULL,
+    email character varying(255) NOT NULL,
+    email_verified_at timestamp(0) without time zone,
+    password character varying(255) NOT NULL,
+    remember_token character varying(100),
+    created_at timestamp(0) without time zone,
+    updated_at timestamp(0) without time zone,
+    tenant_id bigint NOT NULL,
+    branch_id bigint,
+    phone character varying(30),
+    is_active boolean DEFAULT true NOT NULL,
+    last_login_at timestamp(0) without time zone,
+    role character varying(255) DEFAULT 'cashier'::character varying NOT NULL,
+    CONSTRAINT users_role_check CHECK (((role)::text = ANY ((ARRAY['owner'::character varying, 'manager'::character varying, 'cashier'::character varying])::text[])))
+);
+
+
+ALTER TABLE public.users OWNER TO afronovapos;
+
+--
+-- Name: users_id_seq; Type: SEQUENCE; Schema: public; Owner: afronovapos
+--
+
+CREATE SEQUENCE public.users_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.users_id_seq OWNER TO afronovapos;
+
+--
+-- Name: users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: afronovapos
+--
+
+ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
+
+
+--
+-- Name: branch_user id; Type: DEFAULT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.branch_user ALTER COLUMN id SET DEFAULT nextval('public.branch_user_id_seq'::regclass);
+
+
+--
+-- Name: branches id; Type: DEFAULT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.branches ALTER COLUMN id SET DEFAULT nextval('public.branches_id_seq'::regclass);
+
+
+--
+-- Name: categories id; Type: DEFAULT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.categories ALTER COLUMN id SET DEFAULT nextval('public.categories_id_seq'::regclass);
+
+
+--
+-- Name: customer_prices id; Type: DEFAULT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.customer_prices ALTER COLUMN id SET DEFAULT nextval('public.customer_prices_id_seq'::regclass);
+
+
+--
+-- Name: customers id; Type: DEFAULT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.customers ALTER COLUMN id SET DEFAULT nextval('public.customers_id_seq'::regclass);
+
+
+--
+-- Name: expenses id; Type: DEFAULT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.expenses ALTER COLUMN id SET DEFAULT nextval('public.expenses_id_seq'::regclass);
+
+
+--
+-- Name: failed_jobs id; Type: DEFAULT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.failed_jobs ALTER COLUMN id SET DEFAULT nextval('public.failed_jobs_id_seq'::regclass);
+
+
+--
+-- Name: held_sales id; Type: DEFAULT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.held_sales ALTER COLUMN id SET DEFAULT nextval('public.held_sales_id_seq'::regclass);
+
+
+--
+-- Name: jobs id; Type: DEFAULT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.jobs ALTER COLUMN id SET DEFAULT nextval('public.jobs_id_seq'::regclass);
+
+
+--
+-- Name: migrations id; Type: DEFAULT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.migrations ALTER COLUMN id SET DEFAULT nextval('public.migrations_id_seq'::regclass);
+
+
+--
+-- Name: order_items id; Type: DEFAULT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.order_items ALTER COLUMN id SET DEFAULT nextval('public.order_items_id_seq'::regclass);
+
+
+--
+-- Name: orders id; Type: DEFAULT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.orders ALTER COLUMN id SET DEFAULT nextval('public.orders_id_seq'::regclass);
+
+
+--
+-- Name: payments id; Type: DEFAULT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.payments ALTER COLUMN id SET DEFAULT nextval('public.payments_id_seq'::regclass);
+
+
+--
+-- Name: personal_access_tokens id; Type: DEFAULT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.personal_access_tokens ALTER COLUMN id SET DEFAULT nextval('public.personal_access_tokens_id_seq'::regclass);
+
+
+--
+-- Name: platform_admins id; Type: DEFAULT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.platform_admins ALTER COLUMN id SET DEFAULT nextval('public.platform_admins_id_seq'::regclass);
+
+
+--
+-- Name: products id; Type: DEFAULT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.products ALTER COLUMN id SET DEFAULT nextval('public.products_id_seq'::regclass);
+
+
+--
+-- Name: receipts id; Type: DEFAULT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.receipts ALTER COLUMN id SET DEFAULT nextval('public.receipts_id_seq'::regclass);
+
+
+--
+-- Name: sale_items id; Type: DEFAULT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.sale_items ALTER COLUMN id SET DEFAULT nextval('public.sale_items_id_seq'::regclass);
+
+
+--
+-- Name: sales id; Type: DEFAULT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.sales ALTER COLUMN id SET DEFAULT nextval('public.sales_id_seq'::regclass);
+
+
+--
+-- Name: stock_movements id; Type: DEFAULT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.stock_movements ALTER COLUMN id SET DEFAULT nextval('public.stock_movements_id_seq'::regclass);
+
+
+--
+-- Name: stocks id; Type: DEFAULT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.stocks ALTER COLUMN id SET DEFAULT nextval('public.stocks_id_seq'::regclass);
+
+
+--
+-- Name: tenants id; Type: DEFAULT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.tenants ALTER COLUMN id SET DEFAULT nextval('public.tenants_id_seq'::regclass);
+
+
+--
+-- Name: users id; Type: DEFAULT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_id_seq'::regclass);
+
+
+--
+-- Data for Name: branch_user; Type: TABLE DATA; Schema: public; Owner: afronovapos
+--
+
+COPY public.branch_user (id, user_id, branch_id, created_at, updated_at) FROM stdin;
+1	4	1	2026-10-03 11:59:36	2026-10-03 11:59:36
+2	7	1	2026-10-03 11:59:36	2026-10-03 11:59:36
+\.
+
+
+--
+-- Data for Name: branches; Type: TABLE DATA; Schema: public; Owner: afronovapos
+--
+
+COPY public.branches (id, tenant_id, name, code, phone, address, is_active, created_at, updated_at) FROM stdin;
+1	1	Utawala branch	MAIN	\N	\N	t	2026-09-22 15:48:13	2026-09-22 15:48:13
+2	2	Nairobi	MAIN	\N	\N	t	2026-09-23 09:18:48	2026-09-23 09:18:48
+3	3	CBD	MAIN	\N	\N	t	2026-09-23 10:48:06	2026-09-23 10:48:06
+4	4	Kieganguru	MAIN	\N	\N	t	2026-09-24 13:11:06	2026-09-24 13:11:06
+5	5	Kieganguru	MAIN	\N	\N	t	2026-09-25 18:21:08	2026-09-25 18:21:08
+6	6	Fedha	MAIN	\N	\N	t	2026-10-03 17:53:56	2026-10-03 17:53:56
+7	1	Umoja Branch	UMJ	\N	\N	t	2026-10-05 08:13:11	2026-10-05 08:13:11
+\.
+
+
+--
+-- Data for Name: cache; Type: TABLE DATA; Schema: public; Owner: afronovapos
+--
+
+COPY public.cache (key, value, expiration) FROM stdin;
+\.
+
+
+--
+-- Data for Name: cache_locks; Type: TABLE DATA; Schema: public; Owner: afronovapos
+--
+
+COPY public.cache_locks (key, owner, expiration) FROM stdin;
+\.
+
+
+--
+-- Data for Name: categories; Type: TABLE DATA; Schema: public; Owner: afronovapos
+--
+
+COPY public.categories (id, tenant_id, name, description, is_active, created_at, updated_at) FROM stdin;
+\.
+
+
+--
+-- Data for Name: customer_prices; Type: TABLE DATA; Schema: public; Owner: afronovapos
+--
+
+COPY public.customer_prices (id, tenant_id, customer_id, product_id, price, created_at, updated_at) FROM stdin;
+1	1	1	3	850.00	2026-09-24 12:57:32	2026-09-24 12:57:32
+2	1	1	111	300.00	2026-09-25 18:54:30	2026-09-25 18:54:30
+3	1	2	2	1350.00	2026-09-25 18:56:42	2026-09-25 18:56:42
+\.
+
+
+--
+-- Data for Name: customers; Type: TABLE DATA; Schema: public; Owner: afronovapos
+--
+
+COPY public.customers (id, tenant_id, name, phone, email, address, credit_limit, is_active, created_at, updated_at) FROM stdin;
+1	1	Mutugi	0700000000	mutugi@gmail.com	\N	8000.00	t	2026-09-24 11:31:33	2026-09-24 11:31:33
+2	1	Kevin Murangiri	0700000000	\N	\N	9000.00	t	2026-09-25 18:56:13	2026-09-25 18:56:13
+3	5	Nico	0746983700	nico@gmail.com	\N	50000.00	t	2026-09-26 16:51:07	2026-09-26 16:51:07
+\.
+
+
+--
+-- Data for Name: expenses; Type: TABLE DATA; Schema: public; Owner: afronovapos
+--
+
+COPY public.expenses (id, tenant_id, branch_id, category, amount, description, payment_method, reference, paid_at, recorded_by, is_recurring, recurrence_frequency, created_at, updated_at) FROM stdin;
+1	1	1	rent	5000.00	RENT	Cash	\N	2026-09-24 00:00:00	1	t	monthly	2026-09-24 12:50:40	2026-09-24 12:50:40
+2	1	\N	transport	200.00	Motorbike fuel	Cash	\N	2026-09-25 00:00:00	1	t	weekly	2026-09-25 19:08:42	2026-09-25 19:08:42
+\.
+
+
+--
+-- Data for Name: failed_jobs; Type: TABLE DATA; Schema: public; Owner: afronovapos
+--
+
+COPY public.failed_jobs (id, uuid, connection, queue, payload, exception, failed_at) FROM stdin;
+\.
+
+
+--
+-- Data for Name: held_sales; Type: TABLE DATA; Schema: public; Owner: afronovapos
+--
+
+COPY public.held_sales (id, tenant_id, branch_id, customer_id, held_by, label, items, subtotal, discount, tax, total, created_at, updated_at) FROM stdin;
+\.
+
+
+--
+-- Data for Name: job_batches; Type: TABLE DATA; Schema: public; Owner: afronovapos
+--
+
+COPY public.job_batches (id, name, total_jobs, pending_jobs, failed_jobs, failed_job_ids, options, cancelled_at, created_at, finished_at) FROM stdin;
+\.
+
+
+--
+-- Data for Name: jobs; Type: TABLE DATA; Schema: public; Owner: afronovapos
+--
+
+COPY public.jobs (id, queue, payload, attempts, reserved_at, available_at, created_at) FROM stdin;
+\.
+
+
+--
+-- Data for Name: migrations; Type: TABLE DATA; Schema: public; Owner: afronovapos
+--
+
+COPY public.migrations (id, migration, batch) FROM stdin;
+1	0001_01_01_000000_create_users_table	1
+2	0001_01_01_000001_create_cache_table	1
+3	0001_01_01_000002_create_jobs_table	1
+4	2026_08_24_123557_create_tenants_table	1
+5	2026_08_24_123612_create_branches_table	1
+6	2026_08_24_123619_add_tenant_id_to_users_table	1
+7	2026_08_24_124315_create_categories_table	1
+8	2026_08_24_124322_create_products_table	1
+9	2026_08_24_124330_create_customers_table	1
+10	2026_08_24_124336_create_customer_prices_table	1
+11	2026_08_24_124826_create_stocks_table	1
+12	2026_08_24_124832_create_stock_movements_table	1
+13	2026_08_24_175453_create_sales_table	1
+14	2026_08_24_175501_create_sale_items_table	1
+15	2026_08_24_175510_create_payments_table	1
+16	2026_08_24_175522_create_receipts_table	1
+17	2026_08_25_093626_create_personal_access_tokens_table	1
+18	2026_08_31_092458_add_role_to_users_table	1
+19	2026_08_31_092512_create_platform_admins_table	1
+20	2026_08_31_112630_make_customer_id_nullable_on_sales_table	1
+21	2026_09_03_104758_create_held_sales_table	1
+22	2026_09_17_113558_create_expenses_table	1
+23	2026_09_19_150354_create_password_reset_tokens_table	11
+24	2026_09_21_082216_create_orders_and_order_items_tables	12
+25	2026_09_30_000000_add_pay_on_fulfillment_to_orders_table	13
+26	2026_09_30_172900_add_features_to_tenants_table	13
+27	2026_10_01_093915_add_trial_and_soft_deletes_to_tenants_table	13
+28	2026_10_02_104712_add_track_stock_to_products_table	13
+29	2026_10_02_170937_create_branch_user_table	13
+\.
+
+
+--
+-- Data for Name: order_items; Type: TABLE DATA; Schema: public; Owner: afronovapos
+--
+
+COPY public.order_items (id, order_id, product_id, product_name, quantity, unit_price, subtotal, created_at, updated_at) FROM stdin;
+1	1	1	Cerave men	1	1500.00	1500.00	2026-09-24 12:45:49	2026-09-24 12:45:49
+2	2	111	Nivea	3	350.00	1050.00	2026-09-25 18:58:59	2026-09-25 18:58:59
+3	3	2	Hair dryer	1	1500.00	1500.00	2026-09-25 19:02:24	2026-09-25 19:02:24
+4	4	111	Nivea	4	350.00	1400.00	2026-09-25 19:05:53	2026-09-25 19:05:53
+5	4	1	Cerave men	1	1500.00	1500.00	2026-09-25 19:05:53	2026-09-25 19:05:53
+6	5	2	Hair dryer	1	1350.00	1350.00	2026-09-25 19:19:29	2026-09-25 19:19:29
+7	6	112	ESL 500ML	1	750.00	750.00	2026-09-25 19:44:46	2026-09-25 19:44:46
+8	7	3	Paint	1	850.00	850.00	2026-10-03 17:10:46	2026-10-03 17:10:46
+9	8	146	20L Container Refill	3	250.00	750.00	2026-10-03 18:05:27	2026-10-03 18:05:27
+\.
+
+
+--
+-- Data for Name: orders; Type: TABLE DATA; Schema: public; Owner: afronovapos
+--
+
+COPY public.orders (id, tenant_id, branch_id, customer_id, customer_name, customer_phone, delivery_location, status, subtotal, amount_paid, notes, placed_by, sale_id, fulfilled_at, created_at, updated_at, pay_on_fulfillment) FROM stdin;
+1	1	1	1	Mutugi	0700000000	Chuka	fulfilled	1500.00	0.00	\N	1	6	2026-09-24 12:46:20	2026-09-24 12:45:49	2026-09-24 12:46:20	f
+2	1	1	2	Kevin Murangiri	0700000000	Kieganguru	fulfilled	1050.00	1000.00	\N	1	12	2026-09-25 19:00:25	2026-09-25 18:58:59	2026-09-25 19:00:25	f
+3	1	1	\N	Dennis Murimi	0700000000	Chogoria	cancelled	1500.00	1500.00	\N	1	\N	\N	2026-09-25 19:02:24	2026-09-25 19:03:15	f
+4	1	1	\N	Rosh Mugo	0711111111	Chuka	fulfilled	2900.00	2900.00	\N	1	13	2026-09-25 19:06:37	2026-09-25 19:05:53	2026-09-25 19:06:37	f
+5	1	1	2	Kevin Murangiri	0700000000	\N	fulfilled	1350.00	0.00	\N	1	16	2026-09-25 19:20:14	2026-09-25 19:19:29	2026-09-25 19:20:14	f
+6	5	5	\N	kelvin	0741854959	chogoria	pending	750.00	750.00	\N	6	\N	\N	2026-09-25 19:44:46	2026-09-25 19:44:46	f
+7	1	1	1	Mutugi	0700000000	Hddg	fulfilled	850.00	0.00	\N	1	21	2026-10-03 17:11:23	2026-10-03 17:10:46	2026-10-03 17:11:23	f
+8	6	6	\N	David Mungai	0700000000	Vmall	fulfilled	750.00	750.00	\N	8	23	2026-10-03 18:05:54	2026-10-03 18:05:27	2026-10-03 18:05:54	f
+\.
+
+
+--
+-- Data for Name: password_reset_tokens; Type: TABLE DATA; Schema: public; Owner: afronovapos
+--
+
+COPY public.password_reset_tokens (email, token, created_at) FROM stdin;
+dmurimi919@gmail.com	$2y$12$xdZbDBePmg.MG1ByNwWbkudrJElxt4.uvRSfptbFPKBaRbKxh1oOO	2026-09-24 16:03:47
+\.
+
+
+--
+-- Data for Name: payments; Type: TABLE DATA; Schema: public; Owner: afronovapos
+--
+
+COPY public.payments (id, tenant_id, sale_id, customer_id, amount, payment_method, reference, notes, received_by, paid_at, created_at, updated_at) FROM stdin;
+1	1	6	1	1500.00	Cash	\N	\N	1	2026-09-24 12:47:21	2026-09-24 12:47:21	2026-09-24 12:47:21
+2	1	11	2	1350.00	M-Pesa	\N	\N	1	2026-09-25 19:14:50	2026-09-25 19:14:50	2026-09-25 19:14:50
+3	1	12	2	50.00	Cash	\N	\N	1	2026-09-25 19:15:25	2026-09-25 19:15:25	2026-09-25 19:15:25
+4	1	15	2	5000.00	M-Pesa	\N	\N	1	2026-09-25 19:19:00	2026-09-25 19:19:00	2026-09-25 19:19:00
+\.
+
+
+--
+-- Data for Name: personal_access_tokens; Type: TABLE DATA; Schema: public; Owner: afronovapos
+--
+
+COPY public.personal_access_tokens (id, tokenable_type, tokenable_id, name, token, abilities, last_used_at, expires_at, created_at, updated_at) FROM stdin;
+\.
+
+
+--
+-- Data for Name: platform_admins; Type: TABLE DATA; Schema: public; Owner: afronovapos
+--
+
+COPY public.platform_admins (id, name, email, password, is_active, last_login_at, created_at, updated_at) FROM stdin;
+1	Dennis Murimi	dmurimi919@gmail.com	$2y$12$t3LcWVpmD6C/Uemm9QMDj.Lg9FGXjpIhJcJEyz9LxLBAUoCK3dt2K	t	\N	2026-09-22 15:40:53	2026-09-22 15:40:53
+\.
+
+
+--
+-- Data for Name: products; Type: TABLE DATA; Schema: public; Owner: afronovapos
+--
+
+COPY public.products (id, tenant_id, category_id, name, sku, barcode, description, cost_price, selling_price, reorder_level, unit, is_active, created_at, updated_at, track_stock) FROM stdin;
+1	1	\N	Cerave men	Cv0001	\N	\N	900.00	1500.00	10.000	unit	t	2026-09-22 15:50:24	2026-09-22 15:50:24	t
+2	1	\N	Hair dryer	HAIR-001	\N	\N	900.00	1500.00	5.000	unit	t	2026-09-24 11:33:41	2026-09-24 11:33:41	t
+3	1	\N	Paint	P-00001	\N	\N	600.00	1000.00	10.000	unit	t	2026-09-24 12:52:35	2026-09-24 12:52:35	t
+5	4	\N	20L BASCO BRILLIANT WHITE PF	PAINT	\N	\N	1750.00	2100.00	1.000	unit	t	2026-09-25 09:11:23	2026-09-25 09:13:05	t
+6	4	\N	HANZL DOOR LOCK	LOCK	\N	\N	1650.00	2000.00	2.000	unit	t	2026-09-25 09:14:02	2026-09-25 09:14:02	t
+7	4	\N	MEDIUM HANDWASH BASIN	BASIN	\N	\N	1100.00	1300.00	4.000	unit	t	2026-09-25 09:14:44	2026-09-25 09:14:44	t
+4	4	\N	20L BASCO CREAM PF	BASCO	\N	\N	1750.00	2100.00	1.000	unit	t	2026-09-25 09:10:01	2026-09-25 09:16:38	t
+8	4	\N	ST 1X1 G18	SQUARE TUBE	\N	\N	500.00	550.00	2.000	unit	t	2026-09-25 11:10:26	2026-09-25 11:10:26	t
+9	4	\N	ST 3/4 X 3/4 G18	ST	\N	\N	420.00	450.00	2.000	unit	t	2026-09-25 11:11:36	2026-09-25 11:11:36	t
+10	4	\N	SQUARE TUBE 2X1 G18	TUBE 2X1	\N	\N	700.00	750.00	1.000	unit	t	2026-09-25 11:12:30	2026-09-25 11:12:30	t
+11	4	\N	ST 1.5X 1.5 G18	TUBE 1 1/2	\N	\N	800.00	850.00	1.000	unit	t	2026-09-25 11:13:15	2026-09-25 11:13:15	t
+12	4	\N	2M MAISHA MABATI	LONG 6	\N	\N	550.00	600.00	2.000	unit	t	2026-09-25 11:14:13	2026-09-25 11:14:13	t
+13	4	\N	2.5M MAISHA MABATI	LONG 8	\N	\N	688.00	800.00	2.000	unit	t	2026-09-25 11:14:56	2026-09-25 11:14:56	t
+14	4	\N	3M MAISHA MABATI	LONG 10	\N	\N	825.00	900.00	2.000	unit	t	2026-09-25 11:15:48	2026-09-25 11:15:48	t
+15	4	\N	50ML TANGIT PVC GLUE	50ML	\N	\N	147.00	200.00	2.000	unit	t	2026-09-25 11:16:53	2026-09-25 11:16:53	t
+16	4	\N	9MM FLOWERBOARD	9MM	\N	\N	870.00	1100.00	2.000	unit	t	2026-09-25 11:18:00	2026-09-25 11:18:00	t
+17	4	\N	3 INCH GREY WASTE PIPE	3'WASTE PIPE	\N	\N	380.00	600.00	2.000	unit	t	2026-09-25 11:19:02	2026-09-25 11:19:02	t
+18	4	\N	1.25 WASTE PIPE	1 1/4 W/PIPE	\N	\N	170.00	250.00	2.000	unit	t	2026-09-25 11:19:58	2026-09-25 11:19:58	t
+19	4	\N	20L SUPERFAST	BASCO SUPERFAST	\N	\N	3800.00	4400.00	1.000	unit	t	2026-09-25 11:20:38	2026-09-25 11:20:38	t
+20	4	\N	1 INCH PPR PIPE	32MM PPR PIPE	\N	\N	330.00	450.00	1.000	unit	t	2026-09-25 11:21:35	2026-09-25 11:21:35	t
+21	4	\N	ZEBRA PROFLO 1/2 X 60FT	1/2X60FT Z	\N	\N	450.00	550.00	1.000	unit	t	2026-09-25 11:22:33	2026-09-25 11:22:33	t
+22	4	\N	ZEBRA PROFLO 1/2 X 120FT	PROFLO 120FT	\N	\N	900.00	1100.00	1.000	unit	t	2026-09-25 11:23:16	2026-09-25 11:23:16	t
+23	4	\N	PLASTIC POULTRY MESH	PLASTIC MESH	\N	\N	138.00	250.00	10.000	unit	t	2026-09-25 11:24:19	2026-09-25 11:24:19	t
+24	4	\N	METALLIC SPADE	METAL SPADE	\N	\N	350.00	500.00	2.000	unit	t	2026-09-25 11:25:03	2026-09-25 11:25:03	t
+25	4	\N	PANGA 16' L/G	BIG PANGA	\N	\N	170.00	250.00	2.000	unit	t	2026-09-25 11:25:50	2026-09-25 11:25:50	t
+26	4	\N	20MM CONDUIT	2OMM CONDUIT	\N	\N	70.00	100.00	10.000	unit	t	2026-09-25 11:26:42	2026-09-25 11:26:42	t
+27	4	\N	4L BASCO BERMUDA BLUE PF	4L BERMUDA BASCO	\N	\N	400.00	500.00	1.000	unit	t	2026-09-25 11:28:15	2026-09-25 11:28:15	t
+28	4	\N	UTD 4L VINYL SILK BABY PINK	SILK UTD	\N	\N	2400.00	2900.00	1.000	unit	t	2026-09-25 11:29:41	2026-09-25 11:29:41	t
+29	4	\N	2INCH WASTE PIPE	2' WASTE PIPE	\N	\N	250.00	400.00	5.000	unit	t	2026-09-25 11:30:33	2026-09-25 11:30:33	t
+30	4	\N	MOP BUCKET	MOP BUCKET	\N	\N	240.00	350.00	1.000	unit	t	2026-09-25 11:31:16	2026-09-25 11:31:16	t
+31	4	\N	WATERING CAN	WATERING CAN	\N	\N	320.00	400.00	1.000	unit	t	2026-09-25 11:32:02	2026-09-25 11:32:02	t
+32	4	\N	WIREMESH MEDIUM GAUGE	W/MESH MEDIUM GAUGE	\N	\N	580.00	650.00	1.000	unit	t	2026-09-25 11:32:56	2026-09-25 11:32:56	t
+33	4	\N	100L WATERTANK	100L WATER TANK	\N	\N	900.00	1100.00	1.000	unit	t	2026-09-25 11:33:31	2026-09-25 11:33:31	t
+34	4	\N	50L WATERTANK	50LTANK	\N	\N	450.00	500.00	1.000	unit	t	2026-09-25 11:34:13	2026-09-25 11:34:13	t
+35	4	\N	GOLD OXFORD HINGES	OXFORD HINGES	\N	\N	150.00	250.00	2.000	unit	t	2026-09-25 11:34:56	2026-09-25 11:34:56	t
+36	4	\N	20MM PPR PIPES	1/2 PPR PIPE	\N	\N	180.00	130.00	10.000	unit	t	2026-09-25 11:35:53	2026-09-25 11:35:53	t
+37	4	\N	25MM PPR PIPES	3/4 PPR PIPE	\N	\N	220.00	280.00	10.000	unit	t	2026-09-25 11:36:31	2026-09-25 11:36:31	t
+38	4	\N	MDF CHERRY	CHERRY MDF	\N	\N	3050.00	3400.00	2.000	unit	t	2026-09-25 11:37:24	2026-09-25 11:37:24	t
+39	4	\N	MDF PEACH	PEACH MDF	\N	\N	3050.00	3400.00	1.000	unit	t	2026-09-25 11:37:58	2026-09-25 11:37:58	t
+40	4	\N	1L TURPENTINE	TURPENTINE 1L	\N	\N	250.00	300.00	2.000	unit	t	2026-09-25 11:38:50	2026-09-25 11:38:50	t
+41	4	\N	1/2L TURPENTINE	0.5L TURPENTINE	\N	\N	160.00	200.00	1.000	unit	t	2026-09-25 11:39:49	2026-09-25 11:39:49	t
+42	4	\N	1/4L TURPENTINE	1/4L TURPENTINE	\N	\N	110.00	140.00	2.000	unit	t	2026-09-25 11:40:38	2026-09-25 11:40:38	t
+43	4	\N	TRI CIRCLE 265	265 PADLOCK	\N	\N	520.00	650.00	2.000	unit	t	2026-09-25 11:41:50	2026-09-25 11:41:50	t
+44	4	\N	AUDDY 40MM PADLOCK	AUDDY 40MM	\N	\N	260.00	300.00	2.000	unit	t	2026-09-25 11:42:48	2026-09-25 11:42:48	t
+45	4	\N	MINDY 40MM	MINDY 40MM	\N	\N	550.00	550.00	1.000	unit	t	2026-09-25 11:43:44	2026-09-25 11:43:44	t
+46	4	\N	MINDY 60MM	60MM MINDY	\N	\N	550.00	650.00	1.000	unit	t	2026-09-25 11:44:33	2026-09-25 11:44:33	t
+47	4	\N	TANGIT 250ML	250ML TANGIT	\N	\N	430.00	550.00	1.000	unit	t	2026-09-25 11:46:21	2026-09-25 11:46:21	t
+48	4	\N	BASC0 4L CREAM PF	BASCO CREAM EMULSION	\N	\N	400.00	550.00	2.000	unit	t	2026-09-25 11:48:56	2026-09-25 11:48:56	t
+49	4	\N	BASCO 4L BRILLIANT WHITE PF	BRILLIANT WHITE EMULSION	\N	\N	400.00	550.00	2.000	unit	t	2026-09-25 11:50:09	2026-09-25 11:50:09	t
+50	4	\N	BASCO 4L SOFT WHITE PF	SOFT WHITE 4L EMULSION	\N	\N	400.00	550.00	1.000	unit	t	2026-09-25 11:51:11	2026-09-25 11:51:11	t
+51	4	\N	SOLAI 4L CREAM PF	SOLAI 4L EMULSION	\N	\N	380.00	450.00	1.000	unit	t	2026-09-25 11:52:29	2026-09-25 11:52:29	t
+52	4	\N	UTD 4L CREAM PF	UNITED 4L CREAM PF	\N	\N	400.00	500.00	2.000	unit	t	2026-09-25 11:56:08	2026-09-25 11:56:08	t
+53	4	\N	UTD 4L WHITE PF	UTD 4L WHITE PF	\N	\N	400.00	500.00	1.000	unit	t	2026-09-25 11:56:41	2026-09-25 11:56:41	t
+54	4	\N	UTD 4L BLACK PG	UTD 4L BLACK PG	\N	\N	900.00	1000.00	1.000	unit	t	2026-09-25 11:57:22	2026-09-25 11:57:22	t
+55	4	\N	UTD BERMUDA BLUE PF	UTD BERMUDA BLUE PF	\N	\N	400.00	500.00	1.000	unit	t	2026-09-25 11:58:02	2026-09-25 11:58:02	t
+56	4	\N	UTD 1/2L BLACK PG	UTD 1/2L BLACK PG	\N	\N	200.00	200.00	4.000	unit	t	2026-09-25 11:59:04	2026-09-25 11:59:04	t
+57	4	\N	1/4L UTD BLACK	1/4L UTD BLACK	\N	\N	110.00	130.00	1.000	unit	t	2026-09-25 11:59:44	2026-09-25 11:59:44	t
+58	4	\N	UTD SKIMMING COAT 25KG	UTD SKIMMING COAT 25KG	\N	\N	1000.00	1300.00	1.000	unit	t	2026-09-25 12:00:25	2026-09-25 12:00:25	t
+59	4	\N	10KG WHITE PREMIUM PUTTY	10KG WHITE PREMIUM PUTTY	\N	\N	650.00	1000.00	1.000	unit	t	2026-09-25 12:01:19	2026-09-25 12:01:19	t
+60	4	\N	ORION NC CHERRY 1L	ORION NC CHERRY 1L	\N	\N	750.00	630.00	1.000	unit	t	2026-09-25 12:02:27	2026-09-25 12:02:27	t
+61	4	\N	6FT CHAINLINK	6FT CHAINLINK	\N	\N	2700.00	2950.00	1.000	unit	t	2026-09-25 12:03:32	2026-09-25 12:03:32	t
+62	4	\N	MEDIUM BROOM	MEDIUM BROOM	\N	\N	200.00	250.00	1.000	unit	t	2026-09-25 12:04:24	2026-09-25 12:04:24	t
+63	4	\N	PIPE WRENCH	PIPE WRENCH	\N	\N	550.00	800.00	1.000	unit	t	2026-09-25 12:05:11	2026-09-25 12:05:11	t
+64	4	\N	SILVER TILE BINDER	SILVERTILE BINDER	\N	\N	125.00	200.00	1.000	unit	t	2026-09-25 12:06:33	2026-09-25 12:06:33	t
+65	4	\N	BASCO SKIMMING COAT 25KG	BASCO SKIMMING COAT 25KG	\N	\N	1160.00	1400.00	1.000	unit	t	2026-09-25 12:07:23	2026-09-25 12:07:23	t
+66	4	\N	16L KP SPRAYER	16L KP SPRAYER	\N	\N	1270.00	1600.00	1.000	unit	t	2026-09-25 12:08:38	2026-09-25 12:08:38	t
+67	4	\N	ORION 4L CREAM PF	ORION 4L CREAM PF	\N	\N	380.00	450.00	2.000	unit	t	2026-09-25 12:09:28	2026-09-25 12:09:28	t
+68	4	\N	HOOP IRON ROLL	HOOP IRON ROLL	\N	\N	1500.00	1800.00	1.000	unit	t	2026-09-25 12:10:19	2026-09-25 12:10:19	t
+69	4	\N	SQUARE SINK BOWL	SQUARE SINK BOWL	\N	\N	1250.00	1500.00	1.000	unit	t	2026-09-25 12:11:04	2026-09-25 12:11:04	t
+70	4	\N	WASTE PIPE 1.5 INCHES	1 1/2 WASTE PIPE	\N	\N	210.00	350.00	1.000	unit	t	2026-09-25 12:12:06	2026-09-25 12:12:06	t
+71	4	\N	GREASE	GREASE	\N	\N	200.00	250.00	5.000	unit	t	2026-09-25 12:13:10	2026-09-25 12:13:10	t
+72	4	\N	BINDING WIRE	BINDING WIRE	\N	\N	2500.00	3000.00	1.000	unit	t	2026-09-25 12:13:56	2026-09-25 12:13:56	t
+73	4	\N	BINDING WIRE KG	BINDING WIREK	\N	\N	140.00	200.00	1.000	unit	t	2026-09-25 12:14:58	2026-09-25 12:14:58	t
+74	4	\N	4INCH ORANGE WASTE PIPE	4INCH ORANGE WASTE PIPE	\N	\N	935.00	1100.00	1.000	unit	t	2026-09-25 12:19:49	2026-09-25 12:19:49	t
+75	4	\N	D8	D8	\N	\N	580.00	630.00	10.000	unit	t	2026-09-25 12:20:22	2026-09-25 12:20:22	t
+76	4	\N	D10	D10	\N	\N	880.00	950.00	10.000	unit	t	2026-09-25 12:20:55	2026-09-25 12:20:55	t
+77	4	\N	R6	R6	\N	\N	200.00	250.00	10.000	unit	t	2026-09-25 12:21:22	2026-09-25 12:21:22	t
+78	4	\N	ST 1.5 X 1 G18	ST 1.5 X 1 G18	\N	\N	650.00	700.00	5.000	unit	t	2026-09-25 12:22:17	2026-09-25 12:22:17	t
+79	4	\N	CEMENT	CEMENT	\N	\N	850.00	880.00	10.000	unit	t	2026-09-25 12:22:50	2026-09-25 12:22:50	t
+80	4	\N	BLACKPIPE 1.5 INCHES	BLACKPIPE 1.5 INCHES	\N	\N	2100.00	2400.00	1.000	unit	t	2026-09-25 12:23:34	2026-09-25 12:23:34	t
+81	4	\N	3/4 ZEED BAR	3/4 ZEED BAR	\N	\N	750.00	800.00	5.000	unit	t	2026-09-25 12:25:22	2026-09-25 12:25:22	t
+82	4	\N	16FT GUTTER	16FT GUTTER	\N	\N	950.00	1400.00	7.000	unit	t	2026-09-25 12:26:08	2026-09-25 12:26:08	t
+83	4	\N	3/4 PVC PIPE	3/4 PVC PIPE	\N	\N	160.00	250.00	10.000	unit	t	2026-09-25 12:26:52	2026-09-25 12:26:52	t
+84	4	\N	1 INCH PVC PIPE	1 INCH PVC PIPE	\N	\N	200.00	300.00	5.000	unit	t	2026-09-25 12:28:08	2026-09-25 12:28:08	t
+85	4	\N	FLATBAR 3/4	FLATBAR 3/4	\N	\N	200.00	300.00	10.000	unit	t	2026-09-25 12:56:05	2026-09-25 12:56:05	t
+86	4	\N	FLATBAR1 INCH	FLATBAR1 INCH	\N	\N	400.00	450.00	1.000	unit	t	2026-09-25 12:56:45	2026-09-25 12:56:45	t
+87	4	\N	25KG WHITING LIME	25KG WHITING LIME	\N	\N	270.00	350.00	10.000	unit	t	2026-09-25 12:57:45	2026-09-25 12:57:45	t
+88	4	\N	MOMENT DOOR LOCK	MOMENT DOOR LOCK	\N	\N	700.00	1200.00	5.000	unit	t	2026-09-25 12:58:37	2026-09-25 12:58:37	t
+89	4	\N	WHITE TILE BINDER	WHITE TILE BINDER	\N	\N	39.00	100.00	10.000	unit	t	2026-09-25 12:59:51	2026-09-25 12:59:51	t
+90	4	\N	CREAM TILE BINDER	CREAM TILE BINDER	\N	\N	39.00	100.00	10.000	unit	t	2026-09-25 13:00:24	2026-09-25 13:00:24	t
+91	4	\N	3/4 TANK BALLVALVE	3/4 TANK BALLVALVE	\N	\N	900.00	1100.00	1.000	unit	t	2026-09-25 13:03:05	2026-09-25 13:03:05	t
+92	4	\N	1/2 TANK BALLVALVE	1/2 TANK BALLVALVE	\N	\N	650.00	800.00	1.000	unit	t	2026-09-25 13:04:13	2026-09-25 13:04:13	t
+93	4	\N	P TRAP TOILET	PTRAP	\N	\N	2600.00	3200.00	1.000	unit	t	2026-09-25 13:05:56	2026-09-25 13:05:56	t
+94	4	\N	UTD 4L LIGHTOAK VARNISH	UTD 4L LIGHTOAK VARNISH	\N	\N	1000.00	1300.00	1.000	unit	t	2026-09-25 13:07:16	2026-09-25 13:07:16	t
+95	4	\N	ECONOMY WATERPROOF	ECONOMY WATERPROOF	\N	\N	62.00	100.00	10.000	unit	t	2026-09-25 13:08:13	2026-09-25 13:08:13	t
+96	4	\N	BCL PREMIUM WATERPROOF	PREMIUM WATERPROOF	\N	\N	100.00	150.00	10.000	unit	t	2026-09-25 13:09:22	2026-09-25 13:09:22	t
+97	4	\N	PLASTIC VENT	PLASTIC VENT	\N	\N	60.00	100.00	10.000	unit	t	2026-09-25 13:12:00	2026-09-25 13:12:00	t
+98	4	\N	3/4 CHROME PIPES	3/4 CHROME PIPES	\N	\N	320.00	400.00	1.000	unit	t	2026-09-25 13:13:07	2026-09-25 13:13:07	t
+99	4	\N	MAGNETIC LEVEL	MAGNETIC LEVEL	\N	\N	120.00	200.00	1.000	unit	t	2026-09-25 13:13:56	2026-09-25 13:13:56	t
+100	4	\N	INGCO LEVEL	INGCO LEVEL	\N	\N	200.00	300.00	1.000	unit	t	2026-09-25 13:14:39	2026-09-25 13:14:39	t
+101	4	\N	4 INCH NAILS	4 INCH NAILS	\N	\N	136.00	180.00	10.000	unit	t	2026-09-25 13:15:25	2026-09-25 13:15:25	t
+102	4	\N	3 INCH NAILS	3 INCH NAILS	\N	\N	136.00	180.00	10.000	unit	t	2026-09-25 13:15:53	2026-09-25 13:15:53	t
+103	4	\N	2.5 INCH NAILS	2.5 INCH NAILS	\N	\N	136.00	180.00	10.000	unit	t	2026-09-25 13:18:11	2026-09-25 13:18:11	t
+104	4	\N	TOILET SEAT COVER KENPLASTIC	SEAT COVER	\N	\N	450.00	550.00	1.000	unit	t	2026-09-25 13:19:10	2026-09-25 13:19:10	t
+105	4	\N	4L TANGO UTD PAINT	4L TANGO UTD PAINT	\N	\N	400.00	500.00	1.000	unit	t	2026-09-25 13:20:05	2026-09-25 13:20:05	t
+106	4	\N	20L UTD TANGO PAINT	20L UTD TANGO PAINT	\N	\N	1650.00	1800.00	1.000	unit	t	2026-09-25 13:20:39	2026-09-25 13:20:39	t
+107	4	\N	20L UTD CREAM PF	20L UTD CREAM PF	\N	\N	1600.00	1800.00	1.000	unit	t	2026-09-25 13:21:45	2026-09-25 13:21:45	t
+108	4	\N	10L BASCO CREAM PF	10L BASCO CREAM PF	\N	\N	948.00	1200.00	1.000	unit	t	2026-09-25 13:22:48	2026-09-25 13:22:48	t
+109	4	\N	1.5 INCH MDF SCREWS	1.5 INCH MDF SCREWS	\N	\N	170.00	250.00	5.000	unit	t	2026-09-25 13:25:23	2026-09-25 13:25:23	t
+110	4	\N	PLYWOOD	PLYWOOD	\N	\N	450.00	500.00	5.000	unit	t	2026-09-25 13:27:26	2026-09-25 13:27:26	t
+111	1	\N	Nivea	NV-001	\N	\N	200.00	350.00	5.000	unit	t	2026-09-25 18:50:55	2026-09-25 18:50:55	t
+112	5	\N	ESL 500ML	ES001	\N	\N	637.00	750.00	50.000	unit	t	2026-09-25 19:25:23	2026-09-25 19:25:23	t
+113	5	\N	ESL 200ML	ES200	\N	\N	523.00	650.00	20.000	unit	t	2026-09-25 19:26:46	2026-09-25 19:26:46	t
+114	5	\N	EGGS  1  CRATE	CRATE	\N	\N	390.00	450.00	10.000	unit	t	2026-09-25 19:37:25	2026-09-25 19:37:25	t
+115	5	\N	EGGS 1/2 CRATE	half crate	\N	\N	195.00	230.00	10.000	unit	t	2026-09-25 19:40:23	2026-09-25 19:40:23	t
+116	4	\N	20mm PPR ELBOW	20mm PPR ELBOW	\N	\N	4.31	20.00	10.000	unit	t	2026-10-03 11:43:18	2026-10-03 11:43:18	t
+117	4	\N	20MM PPR PLAIN SOCKET	20MM PPR PLAIN SOCKET	\N	\N	2.24	20.00	10.000	unit	t	2026-10-03 11:44:21	2026-10-03 11:44:21	t
+118	4	\N	20MM PPR TEE	20MM PPR TEE	\N	\N	6.03	30.00	10.000	unit	t	2026-10-03 11:45:15	2026-10-03 11:45:15	t
+119	4	\N	25MM PPR ELBOW	25MM PPR ELBOW	\N	\N	6.90	30.00	10.000	unit	t	2026-10-03 11:46:03	2026-10-03 11:46:03	t
+120	4	\N	25MM PPR PLAIN SKT	25MM PPR PLAIN SKT	\N	\N	4.31	30.00	10.000	unit	t	2026-10-03 11:46:55	2026-10-03 11:46:55	t
+121	4	\N	25MM PPR TEE	25MM PPR TEE	\N	\N	8.62	40.00	10.000	unit	t	2026-10-03 11:47:52	2026-10-03 11:47:52	t
+122	4	\N	GUTTER BRACKETS	GUTTER BRACKETS	\N	\N	34.48	100.00	10.000	unit	t	2026-10-03 11:48:40	2026-10-03 11:48:40	t
+123	4	\N	GUTTER CORNER	GUTTER CORNER	\N	\N	190.00	450.00	1.000	unit	t	2026-10-03 11:49:33	2026-10-03 11:49:33	t
+124	4	\N	GUTTER JOINT	GUTTER JOINT	\N	\N	130.00	300.00	10.000	unit	t	2026-10-03 11:50:25	2026-10-03 11:50:25	t
+125	4	\N	GUTTER OUTLET	GUTTER OUTLET	\N	\N	190.00	450.00	1.000	unit	t	2026-10-03 11:51:06	2026-10-03 11:51:06	t
+126	4	\N	3 INCH W/BEND 90	3 INCH W/BEND 90	\N	\N	54.00	100.00	10.000	unit	t	2026-10-03 11:52:23	2026-10-03 11:52:23	t
+127	4	\N	4 INCH WASTE BEND 90	4 INCH WASTE BEND 90	\N	\N	74.00	200.00	10.000	unit	t	2026-10-03 11:53:46	2026-10-03 11:53:46	t
+128	4	\N	2 INCH WASTE BEND 90	2 INCH WASTE BEND 90	\N	\N	19.40	80.00	10.000	unit	t	2026-10-03 11:54:45	2026-10-03 11:54:45	t
+129	4	\N	1.5 INCH W/BEND 90	1.5 INCH W/BEND 90	\N	\N	13.79	60.00	10.000	unit	t	2026-10-03 11:55:40	2026-10-03 11:55:40	t
+130	4	\N	1.5 INCHES W/TEE	1.5 INCHES W/TEE	\N	\N	19.40	60.00	10.000	unit	t	2026-10-03 11:56:35	2026-10-03 11:56:35	t
+131	4	\N	1-WAY FLOORTRAP	1-WAY FLOORTRAP	\N	\N	120.00	250.00	1.000	unit	t	2026-10-03 11:57:38	2026-10-03 11:57:38	t
+132	4	\N	1/2 INCH PVC PIPE	HALF INCH PVC PIPE	\N	\N	110.00	170.00	10.000	unit	t	2026-10-03 12:00:35	2026-10-03 12:00:35	t
+133	4	\N	12X12 MANHOLE COVER	12X12 MANHOLE COVER	\N	\N	376.00	600.00	5.000	unit	t	2026-10-03 12:05:45	2026-10-03 12:05:45	t
+134	4	\N	15X15 MANHOLE COVER	15X15 MANHOLE COVER	\N	\N	470.00	750.00	3.000	unit	t	2026-10-03 12:06:49	2026-10-03 12:06:49	t
+135	4	\N	18X18 MANHOLE COVER	18X18 MANHOLE COVER	\N	\N	690.00	1000.00	1.000	unit	t	2026-10-03 12:08:08	2026-10-03 12:08:08	t
+136	4	\N	24X18 MANHOLE COVER	24X18 MANHOLE COVER	\N	\N	1113.00	1500.00	1.000	unit	t	2026-10-03 12:09:20	2026-10-03 12:09:20	t
+137	4	\N	3FT BLACK POLYTHENE	3FT BLACK POLYTHENE	\N	\N	1200.00	1800.00	1.000	unit	t	2026-10-03 12:10:49	2026-10-03 12:10:49	t
+138	4	\N	3FT POLTHENE	POLYTHENE METER	\N	\N	60.00	100.00	10.000	unit	t	2026-10-03 12:11:58	2026-10-03 12:11:58	t
+139	4	\N	6 INCH PAINT BRUSH	6 INCH PAINT BRUSH	\N	\N	100.00	150.00	5.000	unit	t	2026-10-03 12:13:42	2026-10-03 12:13:42	t
+140	4	\N	4 INCH PAINT BRUSH	4 INCH PAINT BRUSH	\N	\N	65.00	100.00	3.000	unit	t	2026-10-03 12:14:19	2026-10-03 12:14:19	t
+141	4	\N	2 INCH PAINT BRUSH	2 INCH PAINT BRUSH	\N	\N	32.00	60.00	5.000	unit	t	2026-10-03 12:14:54	2026-10-03 12:14:54	t
+142	4	\N	WIRE BRUSH KNICKER	WIRE BRUSH KNICKER	\N	\N	70.00	100.00	5.000	unit	t	2026-10-03 12:15:43	2026-10-03 12:15:43	t
+143	4	\N	D12	D12	\N	\N	1200.00	1300.00	10.000	unit	t	2026-10-03 12:16:33	2026-10-03 12:16:33	t
+144	4	\N	MARINE BOARDS	MARINE	\N	\N	2100.00	2400.00	1.000	unit	t	2026-10-03 12:18:54	2026-10-03 12:18:54	t
+145	4	\N	4L BASCO CREAM GLOSS	CREAM GLOSS	\N	\N	950.00	1100.00	1.000	unit	t	2026-10-03 13:34:42	2026-10-03 13:34:42	t
+146	6	\N	20L Container Refill	20l	\N	\N	50.00	250.00	0.000	unit	t	2026-10-03 17:58:22	2026-10-03 17:58:22	f
+147	6	\N	10L Container Refill	10l	\N	\N	50.00	150.00	0.000	unit	t	2026-10-03 17:59:01	2026-10-03 17:59:01	f
+\.
+
+
+--
+-- Data for Name: receipts; Type: TABLE DATA; Schema: public; Owner: afronovapos
+--
+
+COPY public.receipts (id, tenant_id, sale_id, receipt_number, delivery_method, recipient, sent_at, created_at, updated_at) FROM stdin;
+\.
+
+
+--
+-- Data for Name: sale_items; Type: TABLE DATA; Schema: public; Owner: afronovapos
+--
+
+COPY public.sale_items (id, sale_id, product_id, product_name, quantity, unit_price, discount, subtotal, created_at, updated_at) FROM stdin;
+1	1	1	Cerave men	2.000	1500.00	0.00	3000.00	2026-09-22 15:51:52	2026-09-22 15:51:52
+2	2	1	Cerave men	1.000	1500.00	0.00	1500.00	2026-09-24 11:32:58	2026-09-24 11:32:58
+3	3	1	Cerave men	2.000	1500.00	0.00	3000.00	2026-09-24 12:42:32	2026-09-24 12:42:32
+4	4	2	Hair dryer	1.000	1500.00	0.00	1500.00	2026-09-24 12:44:21	2026-09-24 12:44:21
+5	4	1	Cerave men	1.000	1500.00	0.00	1500.00	2026-09-24 12:44:21	2026-09-24 12:44:21
+6	5	2	Hair dryer	1.000	1500.00	0.00	1500.00	2026-09-24 12:45:23	2026-09-24 12:45:23
+7	5	1	Cerave men	1.000	1500.00	0.00	1500.00	2026-09-24 12:45:23	2026-09-24 12:45:23
+8	6	1	Cerave men	1.000	1500.00	0.00	1500.00	2026-09-24 12:46:20	2026-09-24 12:46:20
+9	7	3	Paint	1.000	850.00	0.00	850.00	2026-09-24 12:58:42	2026-09-24 12:58:42
+10	8	3	Paint	1.000	1000.00	0.00	1000.00	2026-09-25 06:43:45	2026-09-25 06:43:45
+11	9	2	Hair dryer	1.000	1500.00	0.00	1500.00	2026-09-25 12:20:48	2026-09-25 12:20:48
+12	10	2	Hair dryer	2.000	1500.00	0.00	3000.00	2026-09-25 12:32:47	2026-09-25 12:32:47
+13	10	1	Cerave men	1.000	1500.00	0.00	1500.00	2026-09-25 12:32:47	2026-09-25 12:32:47
+14	11	2	Hair dryer	1.000	1350.00	0.00	1350.00	2026-09-25 18:57:03	2026-09-25 18:57:03
+15	12	111	Nivea	3.000	350.00	0.00	1050.00	2026-09-25 19:00:25	2026-09-25 19:00:25
+16	13	111	Nivea	4.000	350.00	0.00	1400.00	2026-09-25 19:06:37	2026-09-25 19:06:37
+17	13	1	Cerave men	1.000	1500.00	0.00	1500.00	2026-09-25 19:06:37	2026-09-25 19:06:37
+18	14	3	Paint	1.000	1000.00	0.00	1000.00	2026-09-25 19:12:38	2026-09-25 19:12:38
+19	15	3	Paint	8.000	1000.00	0.00	8000.00	2026-09-25 19:16:12	2026-09-25 19:16:12
+20	16	2	Hair dryer	1.000	1350.00	0.00	1350.00	2026-09-25 19:20:14	2026-09-25 19:20:14
+21	17	112	ESL 500ML	1.000	750.00	0.00	750.00	2026-09-25 19:29:11	2026-09-25 19:29:11
+22	18	112	ESL 500ML	1.000	750.00	0.00	750.00	2026-09-26 16:49:20	2026-09-26 16:49:20
+23	19	114	EGGS  1  CRATE	3.000	450.00	0.00	1350.00	2026-09-26 16:52:18	2026-09-26 16:52:18
+24	20	1	Cerave men	1.000	1500.00	0.00	1500.00	2026-10-03 17:09:33	2026-10-03 17:09:33
+25	21	3	Paint	1.000	850.00	0.00	850.00	2026-10-03 17:11:23	2026-10-03 17:11:23
+26	22	146	20L Container Refill	2.000	250.00	0.00	500.00	2026-10-03 18:04:41	2026-10-03 18:04:41
+27	22	147	10L Container Refill	1.000	150.00	0.00	150.00	2026-10-03 18:04:41	2026-10-03 18:04:41
+28	23	146	20L Container Refill	3.000	250.00	0.00	750.00	2026-10-03 18:05:54	2026-10-03 18:05:54
+29	24	1	Cerave men	1.000	1500.00	0.00	1500.00	2026-10-05 08:19:39	2026-10-05 08:19:39
+30	25	111	Nivea	2.000	350.00	0.00	700.00	2026-10-05 08:20:43	2026-10-05 08:20:43
+\.
+
+
+--
+-- Data for Name: sales; Type: TABLE DATA; Schema: public; Owner: afronovapos
+--
+
+COPY public.sales (id, tenant_id, branch_id, customer_id, invoice_number, subtotal, discount, tax, total, amount_paid, balance, payment_status, status, sold_by, sold_at, created_at, updated_at) FROM stdin;
+1	1	1	\N	INV-000001	3000.00	0.00	150.00	3150.00	3150.00	0.00	paid	completed	1	2026-09-22 15:51:52	2026-09-22 15:51:52	2026-09-22 15:51:52
+2	1	1	1	INV-000002	1500.00	0.00	75.00	1575.00	0.00	1575.00	unpaid	completed	1	2026-09-24 11:32:58	2026-09-24 11:32:58	2026-09-24 11:32:58
+3	1	1	\N	INV-000003	3000.00	0.00	150.00	3150.00	3150.00	0.00	paid	completed	1	2026-09-24 12:42:32	2026-09-24 12:42:32	2026-09-24 12:42:32
+4	1	1	1	INV-000004	3000.00	0.00	150.00	3150.00	0.00	3150.00	unpaid	completed	1	2026-09-24 12:44:21	2026-09-24 12:44:21	2026-09-24 12:44:21
+5	1	1	\N	INV-000005	3000.00	0.00	150.00	3150.00	3150.00	0.00	paid	completed	1	2026-09-24 12:45:23	2026-09-24 12:45:23	2026-09-24 12:45:23
+6	1	1	1	INV-000006	1500.00	0.00	0.00	1500.00	1500.00	0.00	paid	completed	1	2026-09-24 12:46:20	2026-09-24 12:46:20	2026-09-24 12:47:21
+7	1	1	1	INV-000007	850.00	0.00	42.50	892.50	0.00	892.50	unpaid	completed	1	2026-09-24 12:58:42	2026-09-24 12:58:42	2026-09-24 12:58:42
+8	1	1	\N	INV-000008	1000.00	0.00	50.00	1050.00	1050.00	0.00	paid	completed	1	2026-09-25 06:43:45	2026-09-25 06:43:45	2026-09-25 06:43:45
+9	1	1	\N	INV-000009	1500.00	0.00	206.90	1500.00	1500.00	0.00	paid	completed	1	2026-09-25 12:20:48	2026-09-25 12:20:48	2026-09-25 12:20:48
+10	1	1	\N	INV-000010	4500.00	0.00	620.69	4500.00	4500.00	0.00	paid	completed	1	2026-09-25 12:32:47	2026-09-25 12:32:47	2026-09-25 12:32:47
+13	1	1	\N	INV-000013	2900.00	0.00	0.00	2900.00	2900.00	0.00	paid	completed	1	2026-09-25 19:06:37	2026-09-25 19:06:37	2026-09-25 19:06:37
+14	1	1	\N	INV-000014	1000.00	0.00	137.93	1000.00	1000.00	0.00	paid	completed	7	2026-09-25 19:12:38	2026-09-25 19:12:38	2026-09-25 19:12:38
+11	1	1	2	INV-000011	1350.00	0.00	186.21	1350.00	1350.00	0.00	paid	completed	1	2026-09-25 18:57:03	2026-09-25 18:57:03	2026-09-25 19:14:50
+12	1	1	2	INV-000012	1050.00	0.00	0.00	1050.00	1050.00	0.00	paid	completed	1	2026-09-25 19:00:25	2026-09-25 19:00:25	2026-09-25 19:15:25
+15	1	1	2	INV-000015	8000.00	0.00	1103.45	8000.00	5000.00	3000.00	partial	completed	1	2026-09-25 19:16:12	2026-09-25 19:16:12	2026-09-25 19:19:00
+16	1	1	2	INV-000016	1350.00	0.00	0.00	1350.00	0.00	1350.00	unpaid	completed	1	2026-09-25 19:20:14	2026-09-25 19:20:14	2026-09-25 19:20:14
+17	5	5	\N	INV-000001	750.00	0.00	103.45	750.00	750.00	0.00	paid	completed	6	2026-09-25 19:29:11	2026-09-25 19:29:11	2026-09-25 19:29:11
+18	5	5	\N	INV-000018	750.00	0.00	103.45	750.00	750.00	0.00	paid	completed	6	2026-09-26 16:49:20	2026-09-26 16:49:20	2026-09-26 16:49:20
+19	5	5	3	INV-000019	1350.00	0.00	186.21	1350.00	0.00	1350.00	unpaid	completed	6	2026-09-26 16:52:18	2026-09-26 16:52:18	2026-09-26 16:52:18
+20	1	1	\N	INV-000017	1500.00	0.00	206.90	1500.00	1500.00	0.00	paid	completed	1	2026-10-03 17:09:33	2026-10-03 17:09:33	2026-10-03 17:09:33
+21	1	1	1	INV-000021	850.00	0.00	0.00	850.00	0.00	850.00	unpaid	completed	1	2026-10-03 17:11:23	2026-10-03 17:11:23	2026-10-03 17:11:23
+22	6	6	\N	INV-000001	650.00	0.00	89.66	650.00	650.00	0.00	paid	completed	8	2026-10-03 18:04:41	2026-10-03 18:04:41	2026-10-03 18:04:41
+23	6	6	\N	INV-000023	750.00	0.00	0.00	750.00	750.00	0.00	paid	completed	8	2026-10-03 18:05:54	2026-10-03 18:05:54	2026-10-03 18:05:54
+24	1	7	\N	INV-000022	1500.00	0.00	206.90	1500.00	1500.00	0.00	paid	completed	1	2026-10-05 08:19:39	2026-10-05 08:19:39	2026-10-05 08:19:39
+25	1	1	2	INV-000025	700.00	0.00	96.55	700.00	700.00	0.00	paid	completed	1	2026-10-05 08:20:43	2026-10-05 08:20:43	2026-10-05 08:20:43
+\.
+
+
+--
+-- Data for Name: sessions; Type: TABLE DATA; Schema: public; Owner: afronovapos
+--
+
+COPY public.sessions (id, user_id, ip_address, user_agent, payload, last_activity) FROM stdin;
+0uQr6XMwPfS2oAbG7EbYJZppCuHTbkdTYTq4iGbs	\N	10.136.0.76	Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/154.0.0.0 Safari/537.36	eyJfdG9rZW4iOiI5N3VPNFV1OHpDdEdRcm9RQTUyOTFwWWtjWDNFRnZUYndnYVNHbkx0IiwiX2ZsYXNoIjp7Im9sZCI6W10sIm5ldyI6W119fQ==	1791196991
+\.
+
+
+--
+-- Data for Name: stock_movements; Type: TABLE DATA; Schema: public; Owner: afronovapos
+--
+
+COPY public.stock_movements (id, tenant_id, branch_id, product_id, type, quantity, reference_type, reference_id, notes, created_by, created_at) FROM stdin;
+1	1	1	1	opening_balance	12.000	product	1	Opening stock for Cerave men	1	2026-09-22 15:50:24
+2	1	1	1	sale	2.000	sale	1	Stock sold through invoice INV-000001	1	2026-09-22 15:51:53
+3	1	1	1	sale	1.000	sale	2	Stock sold through invoice INV-000002	1	2026-09-24 11:32:58
+4	1	1	2	opening_balance	10.000	product	2	Opening stock for Hair dryer	1	2026-09-24 11:33:41
+5	1	1	1	sale	2.000	sale	3	Stock sold through invoice INV-000003	1	2026-09-24 12:42:33
+6	1	1	2	sale	1.000	sale	4	Stock sold through invoice INV-000004	1	2026-09-24 12:44:21
+7	1	1	1	sale	1.000	sale	4	Stock sold through invoice INV-000004	1	2026-09-24 12:44:21
+8	1	1	2	sale	1.000	sale	5	Stock sold through invoice INV-000005	1	2026-09-24 12:45:23
+9	1	1	1	sale	1.000	sale	5	Stock sold through invoice INV-000005	1	2026-09-24 12:45:23
+10	1	1	1	sale	1.000	sale	6	Stock sold through invoice INV-000006 (fulfilled order #1)	1	2026-09-24 12:46:21
+11	1	1	3	opening_balance	15.000	product	3	Opening stock for Paint	1	2026-09-24 12:52:35
+12	1	1	3	restock	10.000	manual	\N	Stock received for Paint	1	2026-09-24 12:53:42
+13	1	1	3	adjustment	-5.000	manual_adjustment	\N	Damaged stock	1	2026-09-24 12:54:23
+14	1	1	3	sale	1.000	sale	7	Stock sold through invoice INV-000007	1	2026-09-24 12:58:42
+15	1	1	3	sale	1.000	sale	8	Stock sold through invoice INV-000008	1	2026-09-25 06:43:46
+16	4	4	4	opening_balance	1.000	product	4	Opening stock for 20L BASCO CREAM PF	5	2026-09-25 09:10:02
+17	4	4	5	opening_balance	1.000	product	5	Opening stock for 20L BASCO BRILLIANT WHITE PF	5	2026-09-25 09:11:23
+18	4	4	6	opening_balance	1.000	product	6	Opening stock for HANZL DOOR LOCK	5	2026-09-25 09:14:03
+19	4	4	7	opening_balance	1.000	product	7	Opening stock for MEDIUM HANDWASH BASIN	5	2026-09-25 09:14:45
+20	4	4	4	adjustment	7.000	manual_adjustment	\N	Stocktake correction	5	2026-09-25 09:20:17
+21	4	4	6	adjustment	2.000	manual_adjustment	\N	Stock retake	5	2026-09-25 09:23:26
+22	4	4	7	adjustment	3.000	manual_adjustment	\N	ADD	5	2026-09-25 09:25:48
+23	4	4	8	opening_balance	13.000	product	8	Opening stock for ST 1X1 G18	5	2026-09-25 11:10:26
+24	4	4	9	opening_balance	15.000	product	9	Opening stock for ST 3/4 X 3/4 G18	5	2026-09-25 11:11:36
+25	4	4	10	opening_balance	5.000	product	10	Opening stock for SQUARE TUBE 2X1 G18	5	2026-09-25 11:12:30
+26	4	4	11	opening_balance	4.000	product	11	Opening stock for ST 1.5X 1.5 G18	5	2026-09-25 11:13:15
+27	4	4	12	opening_balance	10.000	product	12	Opening stock for 2M MAISHA MABATI	5	2026-09-25 11:14:14
+28	4	4	13	opening_balance	15.000	product	13	Opening stock for 2.5M MAISHA MABATI	5	2026-09-25 11:14:57
+29	4	4	14	opening_balance	10.000	product	14	Opening stock for 3M MAISHA MABATI	5	2026-09-25 11:15:49
+30	4	4	15	opening_balance	10.000	product	15	Opening stock for 50ML TANGIT PVC GLUE	5	2026-09-25 11:16:53
+31	4	4	16	opening_balance	5.000	product	16	Opening stock for 9MM FLOWERBOARD	5	2026-09-25 11:18:00
+32	4	4	17	opening_balance	11.000	product	17	Opening stock for 3 INCH GREY WASTE PIPE	5	2026-09-25 11:19:02
+33	4	4	18	opening_balance	17.000	product	18	Opening stock for 1.25 WASTE PIPE	5	2026-09-25 11:19:59
+34	4	4	19	opening_balance	1.000	product	19	Opening stock for 20L SUPERFAST	5	2026-09-25 11:20:39
+35	4	4	20	opening_balance	5.000	product	20	Opening stock for 1 INCH PPR PIPE	5	2026-09-25 11:21:36
+36	4	4	21	opening_balance	5.000	product	21	Opening stock for ZEBRA PROFLO 1/2 X 60FT	5	2026-09-25 11:22:33
+37	4	4	22	opening_balance	3.000	product	22	Opening stock for ZEBRA PROFLO 1/2 X 120FT	5	2026-09-25 11:23:16
+38	4	4	23	opening_balance	40.000	product	23	Opening stock for PLASTIC POULTRY MESH	5	2026-09-25 11:24:20
+39	4	4	24	opening_balance	6.000	product	24	Opening stock for METALLIC SPADE	5	2026-09-25 11:25:03
+40	4	4	25	opening_balance	7.000	product	25	Opening stock for PANGA 16' L/G	5	2026-09-25 11:25:50
+41	4	4	26	opening_balance	90.000	product	26	Opening stock for 20MM CONDUIT	5	2026-09-25 11:26:42
+42	4	4	27	opening_balance	4.000	product	27	Opening stock for 4L BASCO BERMUDA BLUE PF	5	2026-09-25 11:28:15
+43	4	4	28	opening_balance	1.000	product	28	Opening stock for UTD 4L VINYL SILK BABY PINK	5	2026-09-25 11:29:41
+44	4	4	29	opening_balance	13.000	product	29	Opening stock for 2INCH WASTE PIPE	5	2026-09-25 11:30:34
+45	4	4	30	opening_balance	2.000	product	30	Opening stock for MOP BUCKET	5	2026-09-25 11:31:17
+46	4	4	31	opening_balance	6.000	product	31	Opening stock for WATERING CAN	5	2026-09-25 11:32:03
+47	4	4	32	opening_balance	4.000	product	32	Opening stock for WIREMESH MEDIUM GAUGE	5	2026-09-25 11:32:57
+48	4	4	33	opening_balance	2.000	product	33	Opening stock for 100L WATERTANK	5	2026-09-25 11:33:32
+49	4	4	34	opening_balance	1.000	product	34	Opening stock for 50L WATERTANK	5	2026-09-25 11:34:13
+50	4	4	35	opening_balance	10.000	product	35	Opening stock for GOLD OXFORD HINGES	5	2026-09-25 11:34:57
+51	4	4	36	opening_balance	30.000	product	36	Opening stock for 20MM PPR PIPES	5	2026-09-25 11:35:53
+52	4	4	37	opening_balance	23.000	product	37	Opening stock for 25MM PPR PIPES	5	2026-09-25 11:36:32
+53	4	4	38	opening_balance	6.000	product	38	Opening stock for MDF CHERRY	5	2026-09-25 11:37:25
+54	4	4	39	opening_balance	3.000	product	39	Opening stock for MDF PEACH	5	2026-09-25 11:37:59
+55	4	4	40	opening_balance	3.000	product	40	Opening stock for 1L TURPENTINE	5	2026-09-25 11:38:50
+56	4	4	41	opening_balance	2.000	product	41	Opening stock for 1/2L TURPENTINE	5	2026-09-25 11:39:49
+57	4	4	42	opening_balance	8.000	product	42	Opening stock for 1/4L TURPENTINE	5	2026-09-25 11:40:39
+58	4	4	43	opening_balance	4.000	product	43	Opening stock for TRI CIRCLE 265	5	2026-09-25 11:41:51
+59	4	4	44	opening_balance	5.000	product	44	Opening stock for AUDDY 40MM PADLOCK	5	2026-09-25 11:42:48
+60	4	4	45	opening_balance	2.000	product	45	Opening stock for MINDY 40MM	5	2026-09-25 11:43:44
+61	4	4	46	opening_balance	3.000	product	46	Opening stock for MINDY 60MM	5	2026-09-25 11:44:33
+62	4	4	47	opening_balance	2.000	product	47	Opening stock for TANGIT 250ML	5	2026-09-25 11:46:22
+63	4	4	48	opening_balance	8.000	product	48	Opening stock for BASC0 4L CREAM PF	5	2026-09-25 11:48:57
+64	4	4	49	opening_balance	3.000	product	49	Opening stock for BASCO 4L BRILLIANT WHITE PF	5	2026-09-25 11:50:09
+65	4	4	50	opening_balance	6.000	product	50	Opening stock for BASCO 4L SOFT WHITE PF	5	2026-09-25 11:51:11
+66	4	4	51	opening_balance	8.000	product	51	Opening stock for SOLAI 4L CREAM PF	5	2026-09-25 11:52:30
+67	4	4	52	opening_balance	8.000	product	52	Opening stock for UTD 4L CREAM PF	5	2026-09-25 11:56:09
+68	4	4	53	opening_balance	3.000	product	53	Opening stock for UTD 4L WHITE PF	5	2026-09-25 11:56:41
+69	4	4	54	opening_balance	2.000	product	54	Opening stock for UTD 4L BLACK PG	5	2026-09-25 11:57:22
+70	4	4	55	opening_balance	3.000	product	55	Opening stock for UTD BERMUDA BLUE PF	5	2026-09-25 11:58:03
+71	4	4	56	opening_balance	12.000	product	56	Opening stock for UTD 1/2L BLACK PG	5	2026-09-25 11:59:04
+72	4	4	57	opening_balance	14.000	product	57	Opening stock for 1/4L UTD BLACK	5	2026-09-25 11:59:45
+73	4	4	58	opening_balance	2.000	product	58	Opening stock for UTD SKIMMING COAT 25KG	5	2026-09-25 12:00:25
+74	4	4	59	opening_balance	3.000	product	59	Opening stock for 10KG WHITE PREMIUM PUTTY	5	2026-09-25 12:01:20
+75	4	4	60	opening_balance	2.000	product	60	Opening stock for ORION NC CHERRY 1L	5	2026-09-25 12:02:27
+76	4	4	61	opening_balance	4.000	product	61	Opening stock for 6FT CHAINLINK	5	2026-09-25 12:03:33
+77	4	4	62	opening_balance	4.000	product	62	Opening stock for MEDIUM BROOM	5	2026-09-25 12:04:24
+78	4	4	63	opening_balance	4.000	product	63	Opening stock for PIPE WRENCH	5	2026-09-25 12:05:12
+79	4	4	64	opening_balance	12.000	product	64	Opening stock for SILVER TILE BINDER	5	2026-09-25 12:06:34
+80	4	4	65	opening_balance	2.000	product	65	Opening stock for BASCO SKIMMING COAT 25KG	5	2026-09-25 12:07:24
+81	4	4	66	opening_balance	2.000	product	66	Opening stock for 16L KP SPRAYER	5	2026-09-25 12:08:39
+82	4	4	67	opening_balance	8.000	product	67	Opening stock for ORION 4L CREAM PF	5	2026-09-25 12:09:29
+83	4	4	68	opening_balance	8.000	product	68	Opening stock for HOOP IRON ROLL	5	2026-09-25 12:10:19
+84	4	4	69	opening_balance	2.000	product	69	Opening stock for SQUARE SINK BOWL	5	2026-09-25 12:11:04
+85	4	4	70	opening_balance	14.000	product	70	Opening stock for WASTE PIPE 1.5 INCHES	5	2026-09-25 12:12:07
+86	4	4	71	opening_balance	21.000	product	71	Opening stock for GREASE	5	2026-09-25 12:13:11
+87	4	4	72	opening_balance	1.000	product	72	Opening stock for BINDING WIRE	5	2026-09-25 12:13:57
+88	4	4	73	opening_balance	15.000	product	73	Opening stock for BINDING WIRE KG	5	2026-09-25 12:14:58
+89	4	4	74	opening_balance	12.000	product	74	Opening stock for 4INCH ORANGE WASTE PIPE	5	2026-09-25 12:19:49
+90	4	4	75	opening_balance	25.000	product	75	Opening stock for D8	5	2026-09-25 12:20:23
+91	1	1	2	sale	1.000	sale	9	Stock sold through invoice INV-000009	1	2026-09-25 12:20:48
+92	4	4	76	opening_balance	16.000	product	76	Opening stock for D10	5	2026-09-25 12:20:55
+93	4	4	77	opening_balance	80.000	product	77	Opening stock for R6	5	2026-09-25 12:21:23
+94	4	4	78	opening_balance	16.000	product	78	Opening stock for ST 1.5 X 1 G18	5	2026-09-25 12:22:18
+95	4	4	79	opening_balance	50.000	product	79	Opening stock for CEMENT	5	2026-09-25 12:22:50
+96	4	4	80	opening_balance	3.000	product	80	Opening stock for BLACKPIPE 1.5 INCHES	5	2026-09-25 12:23:34
+97	4	4	81	opening_balance	20.000	product	81	Opening stock for 3/4 ZEED BAR	5	2026-09-25 12:25:22
+98	4	4	82	opening_balance	13.000	product	82	Opening stock for 16FT GUTTER	5	2026-09-25 12:26:08
+99	4	4	83	opening_balance	30.000	product	83	Opening stock for 3/4 PVC PIPE	5	2026-09-25 12:26:53
+100	4	4	84	opening_balance	12.000	product	84	Opening stock for 1 INCH PVC PIPE	5	2026-09-25 12:28:08
+101	1	1	2	sale	2.000	sale	10	Stock sold through invoice INV-000010	1	2026-09-25 12:32:47
+102	1	1	1	sale	1.000	sale	10	Stock sold through invoice INV-000010	1	2026-09-25 12:32:47
+103	4	4	85	opening_balance	14.000	product	85	Opening stock for FLATBAR 3/4	5	2026-09-25 12:56:06
+104	4	4	86	opening_balance	10.000	product	86	Opening stock for FLATBAR1 INCH	5	2026-09-25 12:56:46
+105	4	4	87	opening_balance	21.000	product	87	Opening stock for 25KG WHITING LIME	5	2026-09-25 12:57:45
+106	4	4	88	opening_balance	7.000	product	88	Opening stock for MOMENT DOOR LOCK	5	2026-09-25 12:58:38
+107	4	4	89	opening_balance	85.000	product	89	Opening stock for WHITE TILE BINDER	5	2026-09-25 12:59:51
+108	4	4	90	opening_balance	88.000	product	90	Opening stock for CREAM TILE BINDER	5	2026-09-25 13:00:24
+109	4	4	91	opening_balance	2.000	product	91	Opening stock for 3/4 TANK BALLVALVE	5	2026-09-25 13:03:05
+110	4	4	92	opening_balance	3.000	product	92	Opening stock for 1/2 TANK BALLVALVE	5	2026-09-25 13:04:13
+111	4	4	93	opening_balance	1.000	product	93	Opening stock for P TRAP TOILET	5	2026-09-25 13:05:57
+112	4	4	94	opening_balance	3.000	product	94	Opening stock for UTD 4L LIGHTOAK VARNISH	5	2026-09-25 13:07:17
+113	4	4	95	opening_balance	20.000	product	95	Opening stock for ECONOMY WATERPROOF	5	2026-09-25 13:08:13
+114	4	4	96	opening_balance	20.000	product	96	Opening stock for BCL PREMIUM WATERPROOF	5	2026-09-25 13:09:23
+115	4	4	97	opening_balance	40.000	product	97	Opening stock for PLASTIC VENT	5	2026-09-25 13:12:01
+116	4	4	98	opening_balance	7.000	product	98	Opening stock for 3/4 CHROME PIPES	5	2026-09-25 13:13:08
+117	4	4	99	opening_balance	6.000	product	99	Opening stock for MAGNETIC LEVEL	5	2026-09-25 13:13:57
+118	4	4	100	opening_balance	3.000	product	100	Opening stock for INGCO LEVEL	5	2026-09-25 13:14:39
+119	4	4	101	opening_balance	40.000	product	101	Opening stock for 4 INCH NAILS	5	2026-09-25 13:15:26
+120	4	4	102	opening_balance	23.000	product	102	Opening stock for 3 INCH NAILS	5	2026-09-25 13:15:54
+121	4	4	103	opening_balance	70.000	product	103	Opening stock for 2.5 INCH NAILS	5	2026-09-25 13:18:12
+122	4	4	104	opening_balance	10.000	product	104	Opening stock for TOILET SEAT COVER KENPLASTIC	5	2026-09-25 13:19:10
+123	4	4	105	opening_balance	3.000	product	105	Opening stock for 4L TANGO UTD PAINT	5	2026-09-25 13:20:06
+124	4	4	106	opening_balance	1.000	product	106	Opening stock for 20L UTD TANGO PAINT	5	2026-09-25 13:20:39
+125	4	4	107	opening_balance	5.000	product	107	Opening stock for 20L UTD CREAM PF	5	2026-09-25 13:21:46
+126	4	4	108	opening_balance	2.000	product	108	Opening stock for 10L BASCO CREAM PF	5	2026-09-25 13:22:49
+127	4	4	109	opening_balance	18.000	product	109	Opening stock for 1.5 INCH MDF SCREWS	5	2026-09-25 13:25:24
+128	4	4	110	opening_balance	10.000	product	110	Opening stock for PLYWOOD	5	2026-09-25 13:27:27
+129	4	4	5	adjustment	4.000	manual_adjustment	\N	STOCKTAKE CORRECTION	5	2026-09-25 13:56:00
+130	1	1	111	opening_balance	10.000	product	111	Opening stock for Nivea	1	2026-09-25 18:50:55
+131	1	1	1	restock	5.000	manual	\N	Stock received for Cerave men	1	2026-09-25 18:52:17
+132	1	1	1	restock	5.000	manual	\N	Stock received for Cerave men	1	2026-09-25 18:52:55
+133	1	1	1	adjustment	-2.000	manual_adjustment	\N	Damaged Stock	1	2026-09-25 18:53:47
+134	1	1	2	sale	1.000	sale	11	Stock sold through invoice INV-000011	1	2026-09-25 18:57:03
+135	1	1	111	sale	3.000	sale	12	Stock sold through invoice INV-000012 (fulfilled order #2)	1	2026-09-25 19:00:25
+136	1	1	111	sale	4.000	sale	13	Stock sold through invoice INV-000013 (fulfilled order #4)	1	2026-09-25 19:06:37
+137	1	1	1	sale	1.000	sale	13	Stock sold through invoice INV-000013 (fulfilled order #4)	1	2026-09-25 19:06:37
+138	1	1	3	sale	1.000	sale	14	Stock sold through invoice INV-000014	7	2026-09-25 19:12:39
+139	1	1	3	sale	8.000	sale	15	Stock sold through invoice INV-000015	1	2026-09-25 19:16:12
+140	1	1	2	sale	1.000	sale	16	Stock sold through invoice INV-000016 (fulfilled order #5)	1	2026-09-25 19:20:14
+141	5	5	112	opening_balance	20.000	product	112	Opening stock for ESL 500ML	6	2026-09-25 19:25:23
+142	5	5	113	opening_balance	10.000	product	113	Opening stock for ESL 200ML	6	2026-09-25 19:26:47
+143	5	5	112	sale	1.000	sale	17	Stock sold through invoice INV-000001	6	2026-09-25 19:29:12
+144	5	5	114	opening_balance	5.000	product	114	Opening stock for EGGS  1  CRATE	6	2026-09-25 19:37:25
+145	5	5	115	opening_balance	5.000	product	115	Opening stock for EGGS 1/2 CRATE	6	2026-09-25 19:40:24
+146	5	5	112	sale	1.000	sale	18	Stock sold through invoice INV-000018	6	2026-09-26 16:49:20
+147	5	5	114	sale	3.000	sale	19	Stock sold through invoice INV-000019	6	2026-09-26 16:52:18
+148	4	4	116	opening_balance	900.000	product	116	Opening stock for 20mm PPR ELBOW	5	2026-10-03 11:43:18
+149	4	4	117	opening_balance	800.000	product	117	Opening stock for 20MM PPR PLAIN SOCKET	5	2026-10-03 11:44:21
+150	4	4	118	opening_balance	500.000	product	118	Opening stock for 20MM PPR TEE	5	2026-10-03 11:45:15
+151	4	4	119	opening_balance	450.000	product	119	Opening stock for 25MM PPR ELBOW	5	2026-10-03 11:46:04
+152	4	4	120	opening_balance	450.000	product	120	Opening stock for 25MM PPR PLAIN SKT	5	2026-10-03 11:46:56
+153	4	4	121	opening_balance	450.000	product	121	Opening stock for 25MM PPR TEE	5	2026-10-03 11:47:53
+154	4	4	122	opening_balance	140.000	product	122	Opening stock for GUTTER BRACKETS	5	2026-10-03 11:48:41
+155	4	4	123	opening_balance	10.000	product	123	Opening stock for GUTTER CORNER	5	2026-10-03 11:49:33
+156	4	4	124	opening_balance	20.000	product	124	Opening stock for GUTTER JOINT	5	2026-10-03 11:50:26
+157	4	4	125	opening_balance	5.000	product	125	Opening stock for GUTTER OUTLET	5	2026-10-03 11:51:06
+158	4	4	126	opening_balance	15.000	product	126	Opening stock for 3 INCH W/BEND 90	5	2026-10-03 11:52:24
+159	4	4	127	opening_balance	35.000	product	127	Opening stock for 4 INCH WASTE BEND 90	5	2026-10-03 11:53:46
+160	4	4	128	opening_balance	60.000	product	128	Opening stock for 2 INCH WASTE BEND 90	5	2026-10-03 11:54:46
+161	4	4	129	opening_balance	80.000	product	129	Opening stock for 1.5 INCH W/BEND 90	5	2026-10-03 11:55:40
+162	4	4	130	opening_balance	80.000	product	130	Opening stock for 1.5 INCHES W/TEE	5	2026-10-03 11:56:35
+163	4	4	131	opening_balance	10.000	product	131	Opening stock for 1-WAY FLOORTRAP	5	2026-10-03 11:57:38
+164	4	4	8	adjustment	7.000	manual_adjustment	\N	RESTOCK	5	2026-10-03 11:58:51
+165	4	4	9	adjustment	9.000	manual_adjustment	\N	RESTOCK	5	2026-10-03 11:59:17
+166	4	4	79	adjustment	50.000	manual_adjustment	\N	RESTOCK	5	2026-10-03 11:59:38
+167	4	4	132	opening_balance	52.000	product	132	Opening stock for 1/2 INCH PVC PIPE	5	2026-10-03 12:00:36
+168	4	4	132	adjustment	30.000	manual_adjustment	\N	RESTOCK	5	2026-10-03 12:01:16
+169	4	4	133	opening_balance	9.000	product	133	Opening stock for 12X12 MANHOLE COVER	5	2026-10-03 12:05:46
+170	4	4	134	opening_balance	14.000	product	134	Opening stock for 15X15 MANHOLE COVER	5	2026-10-03 12:06:49
+171	4	4	135	opening_balance	5.000	product	135	Opening stock for 18X18 MANHOLE COVER	5	2026-10-03 12:08:09
+172	4	4	136	opening_balance	8.000	product	136	Opening stock for 24X18 MANHOLE COVER	5	2026-10-03 12:09:21
+173	4	4	137	opening_balance	7.000	product	137	Opening stock for 3FT BLACK POLYTHENE	5	2026-10-03 12:10:49
+174	4	4	138	opening_balance	50.000	product	138	Opening stock for 3FT POLTHENE	5	2026-10-03 12:11:59
+175	4	4	139	opening_balance	12.000	product	139	Opening stock for 6 INCH PAINT BRUSH	5	2026-10-03 12:13:42
+176	4	4	140	opening_balance	12.000	product	140	Opening stock for 4 INCH PAINT BRUSH	5	2026-10-03 12:14:19
+177	4	4	141	opening_balance	12.000	product	141	Opening stock for 2 INCH PAINT BRUSH	5	2026-10-03 12:14:54
+178	4	4	142	opening_balance	11.000	product	142	Opening stock for WIRE BRUSH KNICKER	5	2026-10-03 12:15:44
+179	4	4	143	opening_balance	17.000	product	143	Opening stock for D12	5	2026-10-03 12:16:33
+180	4	4	144	opening_balance	3.000	product	144	Opening stock for MARINE BOARDS	5	2026-10-03 12:18:54
+181	4	4	132	adjustment	23.000	manual_adjustment	\N	RESTOCK	5	2026-10-03 13:25:28
+182	4	4	95	adjustment	15.000	manual_adjustment	\N	RESTOCK	5	2026-10-03 13:27:17
+183	4	4	145	opening_balance	4.000	product	145	Opening stock for 4L BASCO CREAM GLOSS	5	2026-10-03 13:34:42
+184	1	1	1	sale	1.000	sale	20	Stock sold through invoice INV-000017	1	2026-10-03 17:09:33
+185	1	1	3	sale	1.000	sale	21	Stock sold through invoice INV-000021 (fulfilled order #7)	1	2026-10-03 17:11:23
+186	1	7	1	opening_balance	13.000	product	1	Opening stock for Cerave men	1	2026-10-05 08:13:55
+187	1	7	2	opening_balance	11.000	product	2	Opening stock for Hair dryer	1	2026-10-05 08:14:24
+188	1	7	1	sale	1.000	sale	24	Stock sold through invoice INV-000022	1	2026-10-05 08:19:39
+189	1	1	111	sale	2.000	sale	25	Stock sold through invoice INV-000025	1	2026-10-05 08:20:43
+\.
+
+
+--
+-- Data for Name: stocks; Type: TABLE DATA; Schema: public; Owner: afronovapos
+--
+
+COPY public.stocks (id, tenant_id, branch_id, product_id, quantity, reorder_level, created_at, updated_at) FROM stdin;
+66	4	4	66	2.000	1.000	2026-09-25 12:08:38	2026-09-25 12:08:38
+67	4	4	67	8.000	2.000	2026-09-25 12:09:28	2026-09-25 12:09:28
+68	4	4	68	8.000	1.000	2026-09-25 12:10:19	2026-09-25 12:10:19
+69	4	4	69	2.000	1.000	2026-09-25 12:11:04	2026-09-25 12:11:04
+70	4	4	70	14.000	1.000	2026-09-25 12:12:06	2026-09-25 12:12:06
+80	4	4	80	3.000	1.000	2026-09-25 12:23:34	2026-09-25 12:23:34
+71	4	4	71	21.000	5.000	2026-09-25 12:13:10	2026-09-25 12:13:10
+85	4	4	85	14.000	10.000	2026-09-25 12:56:05	2026-09-25 12:56:05
+72	4	4	72	1.000	1.000	2026-09-25 12:13:56	2026-09-25 12:13:56
+73	4	4	73	15.000	1.000	2026-09-25 12:14:58	2026-09-25 12:14:58
+74	4	4	74	12.000	1.000	2026-09-25 12:19:49	2026-09-25 12:19:49
+4	4	4	4	8.000	8.000	2026-09-25 09:10:01	2026-09-25 09:20:17
+6	4	4	6	3.000	2.000	2026-09-25 09:14:02	2026-09-25 09:23:26
+7	4	4	7	4.000	4.000	2026-09-25 09:14:44	2026-09-25 09:25:47
+10	4	4	10	5.000	1.000	2026-09-25 11:12:30	2026-09-25 11:12:30
+11	4	4	11	4.000	1.000	2026-09-25 11:13:15	2026-09-25 11:13:15
+12	4	4	12	10.000	2.000	2026-09-25 11:14:13	2026-09-25 11:14:13
+13	4	4	13	15.000	2.000	2026-09-25 11:14:56	2026-09-25 11:14:56
+14	4	4	14	10.000	2.000	2026-09-25 11:15:48	2026-09-25 11:15:48
+15	4	4	15	10.000	2.000	2026-09-25 11:16:53	2026-09-25 11:16:53
+16	4	4	16	5.000	2.000	2026-09-25 11:18:00	2026-09-25 11:18:00
+17	4	4	17	11.000	2.000	2026-09-25 11:19:02	2026-09-25 11:19:02
+18	4	4	18	17.000	2.000	2026-09-25 11:19:58	2026-09-25 11:19:58
+19	4	4	19	1.000	1.000	2026-09-25 11:20:38	2026-09-25 11:20:38
+20	4	4	20	5.000	1.000	2026-09-25 11:21:35	2026-09-25 11:21:35
+21	4	4	21	5.000	1.000	2026-09-25 11:22:33	2026-09-25 11:22:33
+22	4	4	22	3.000	1.000	2026-09-25 11:23:16	2026-09-25 11:23:16
+23	4	4	23	40.000	10.000	2026-09-25 11:24:19	2026-09-25 11:24:19
+24	4	4	24	6.000	2.000	2026-09-25 11:25:03	2026-09-25 11:25:03
+25	4	4	25	7.000	2.000	2026-09-25 11:25:50	2026-09-25 11:25:50
+26	4	4	26	90.000	10.000	2026-09-25 11:26:42	2026-09-25 11:26:42
+27	4	4	27	4.000	1.000	2026-09-25 11:28:15	2026-09-25 11:28:15
+28	4	4	28	1.000	1.000	2026-09-25 11:29:41	2026-09-25 11:29:41
+29	4	4	29	13.000	5.000	2026-09-25 11:30:33	2026-09-25 11:30:33
+30	4	4	30	2.000	1.000	2026-09-25 11:31:16	2026-09-25 11:31:16
+31	4	4	31	6.000	1.000	2026-09-25 11:32:02	2026-09-25 11:32:02
+32	4	4	32	4.000	1.000	2026-09-25 11:32:56	2026-09-25 11:32:56
+33	4	4	33	2.000	1.000	2026-09-25 11:33:31	2026-09-25 11:33:31
+34	4	4	34	1.000	1.000	2026-09-25 11:34:13	2026-09-25 11:34:13
+35	4	4	35	10.000	2.000	2026-09-25 11:34:56	2026-09-25 11:34:56
+36	4	4	36	30.000	10.000	2026-09-25 11:35:53	2026-09-25 11:35:53
+37	4	4	37	23.000	10.000	2026-09-25 11:36:31	2026-09-25 11:36:31
+38	4	4	38	6.000	2.000	2026-09-25 11:37:24	2026-09-25 11:37:24
+39	4	4	39	3.000	1.000	2026-09-25 11:37:58	2026-09-25 11:37:58
+40	4	4	40	3.000	2.000	2026-09-25 11:38:50	2026-09-25 11:38:50
+41	4	4	41	2.000	1.000	2026-09-25 11:39:49	2026-09-25 11:39:49
+42	4	4	42	8.000	2.000	2026-09-25 11:40:38	2026-09-25 11:40:38
+43	4	4	43	4.000	2.000	2026-09-25 11:41:50	2026-09-25 11:41:50
+44	4	4	44	5.000	2.000	2026-09-25 11:42:48	2026-09-25 11:42:48
+45	4	4	45	2.000	1.000	2026-09-25 11:43:44	2026-09-25 11:43:44
+46	4	4	46	3.000	1.000	2026-09-25 11:44:33	2026-09-25 11:44:33
+47	4	4	47	2.000	1.000	2026-09-25 11:46:21	2026-09-25 11:46:21
+48	4	4	48	8.000	2.000	2026-09-25 11:48:56	2026-09-25 11:48:56
+49	4	4	49	3.000	2.000	2026-09-25 11:50:09	2026-09-25 11:50:09
+50	4	4	50	6.000	1.000	2026-09-25 11:51:11	2026-09-25 11:51:11
+51	4	4	51	8.000	1.000	2026-09-25 11:52:29	2026-09-25 11:52:29
+52	4	4	52	8.000	2.000	2026-09-25 11:56:08	2026-09-25 11:56:08
+53	4	4	53	3.000	1.000	2026-09-25 11:56:41	2026-09-25 11:56:41
+54	4	4	54	2.000	1.000	2026-09-25 11:57:22	2026-09-25 11:57:22
+55	4	4	55	3.000	1.000	2026-09-25 11:58:02	2026-09-25 11:58:02
+56	4	4	56	12.000	4.000	2026-09-25 11:59:04	2026-09-25 11:59:04
+57	4	4	57	14.000	1.000	2026-09-25 11:59:44	2026-09-25 11:59:44
+58	4	4	58	2.000	1.000	2026-09-25 12:00:25	2026-09-25 12:00:25
+59	4	4	59	3.000	1.000	2026-09-25 12:01:19	2026-09-25 12:01:19
+60	4	4	60	2.000	1.000	2026-09-25 12:02:27	2026-09-25 12:02:27
+61	4	4	61	4.000	1.000	2026-09-25 12:03:32	2026-09-25 12:03:32
+62	4	4	62	4.000	1.000	2026-09-25 12:04:24	2026-09-25 12:04:24
+63	4	4	63	4.000	1.000	2026-09-25 12:05:11	2026-09-25 12:05:11
+64	4	4	64	12.000	1.000	2026-09-25 12:06:33	2026-09-25 12:06:33
+65	4	4	65	2.000	1.000	2026-09-25 12:07:23	2026-09-25 12:07:23
+75	4	4	75	25.000	10.000	2026-09-25 12:20:23	2026-09-25 12:20:23
+86	4	4	86	10.000	1.000	2026-09-25 12:56:45	2026-09-25 12:56:45
+76	4	4	76	16.000	10.000	2026-09-25 12:20:55	2026-09-25 12:20:55
+77	4	4	77	80.000	10.000	2026-09-25 12:21:22	2026-09-25 12:21:22
+78	4	4	78	16.000	5.000	2026-09-25 12:22:17	2026-09-25 12:22:17
+81	4	4	81	20.000	5.000	2026-09-25 12:25:22	2026-09-25 12:25:22
+82	4	4	82	13.000	7.000	2026-09-25 12:26:08	2026-09-25 12:26:08
+83	4	4	83	30.000	10.000	2026-09-25 12:26:52	2026-09-25 12:26:52
+84	4	4	84	12.000	5.000	2026-09-25 12:28:08	2026-09-25 12:28:08
+3	1	1	3	8.000	10.000	2026-09-24 12:52:35	2026-10-03 17:11:23
+8	4	4	8	20.000	2.000	2026-09-25 11:10:26	2026-10-03 11:58:51
+87	4	4	87	21.000	10.000	2026-09-25 12:57:45	2026-09-25 12:57:45
+88	4	4	88	7.000	5.000	2026-09-25 12:58:37	2026-09-25 12:58:37
+2	1	1	2	3.000	5.000	2026-09-24 11:33:41	2026-09-25 19:20:14
+9	4	4	9	24.000	2.000	2026-09-25 11:11:36	2026-10-03 11:59:16
+79	4	4	79	100.000	10.000	2026-09-25 12:22:50	2026-10-03 11:59:38
+1	1	1	1	9.000	10.000	2026-09-22 15:50:24	2026-10-03 17:09:33
+89	4	4	89	85.000	10.000	2026-09-25 12:59:51	2026-09-25 12:59:51
+90	4	4	90	88.000	10.000	2026-09-25 13:00:24	2026-09-25 13:00:24
+91	4	4	91	2.000	1.000	2026-09-25 13:03:05	2026-09-25 13:03:05
+92	4	4	92	3.000	1.000	2026-09-25 13:04:13	2026-09-25 13:04:13
+93	4	4	93	1.000	1.000	2026-09-25 13:05:56	2026-09-25 13:05:56
+94	4	4	94	3.000	1.000	2026-09-25 13:07:16	2026-09-25 13:07:16
+96	4	4	96	20.000	10.000	2026-09-25 13:09:22	2026-09-25 13:09:22
+97	4	4	97	40.000	10.000	2026-09-25 13:12:00	2026-09-25 13:12:00
+98	4	4	98	7.000	1.000	2026-09-25 13:13:07	2026-09-25 13:13:07
+99	4	4	99	6.000	1.000	2026-09-25 13:13:56	2026-09-25 13:13:56
+100	4	4	100	3.000	1.000	2026-09-25 13:14:39	2026-09-25 13:14:39
+101	4	4	101	40.000	10.000	2026-09-25 13:15:25	2026-09-25 13:15:25
+102	4	4	102	23.000	10.000	2026-09-25 13:15:53	2026-09-25 13:15:53
+103	4	4	103	70.000	10.000	2026-09-25 13:18:11	2026-09-25 13:18:11
+104	4	4	104	10.000	1.000	2026-09-25 13:19:10	2026-09-25 13:19:10
+105	4	4	105	3.000	1.000	2026-09-25 13:20:05	2026-09-25 13:20:05
+106	4	4	106	1.000	1.000	2026-09-25 13:20:39	2026-09-25 13:20:39
+107	4	4	107	5.000	1.000	2026-09-25 13:21:45	2026-09-25 13:21:45
+108	4	4	108	2.000	1.000	2026-09-25 13:22:48	2026-09-25 13:22:48
+109	4	4	109	18.000	5.000	2026-09-25 13:25:23	2026-09-25 13:25:23
+110	4	4	110	10.000	5.000	2026-09-25 13:27:26	2026-09-25 13:27:26
+5	4	4	5	5.000	5.000	2026-09-25 09:11:23	2026-09-25 13:55:59
+113	5	5	113	10.000	20.000	2026-09-25 19:26:46	2026-09-25 19:26:46
+115	5	5	115	5.000	10.000	2026-09-25 19:40:23	2026-09-25 19:40:23
+112	5	5	112	18.000	50.000	2026-09-25 19:25:23	2026-09-26 16:49:20
+114	5	5	114	2.000	10.000	2026-09-25 19:37:25	2026-09-26 16:52:18
+116	4	4	116	900.000	10.000	2026-10-03 11:43:18	2026-10-03 11:43:18
+117	4	4	117	800.000	10.000	2026-10-03 11:44:21	2026-10-03 11:44:21
+118	4	4	118	500.000	10.000	2026-10-03 11:45:15	2026-10-03 11:45:15
+119	4	4	119	450.000	10.000	2026-10-03 11:46:03	2026-10-03 11:46:03
+120	4	4	120	450.000	10.000	2026-10-03 11:46:55	2026-10-03 11:46:55
+121	4	4	121	450.000	10.000	2026-10-03 11:47:52	2026-10-03 11:47:52
+122	4	4	122	140.000	10.000	2026-10-03 11:48:40	2026-10-03 11:48:40
+123	4	4	123	10.000	1.000	2026-10-03 11:49:33	2026-10-03 11:49:33
+124	4	4	124	20.000	10.000	2026-10-03 11:50:25	2026-10-03 11:50:25
+125	4	4	125	5.000	1.000	2026-10-03 11:51:06	2026-10-03 11:51:06
+126	4	4	126	15.000	10.000	2026-10-03 11:52:23	2026-10-03 11:52:23
+127	4	4	127	35.000	10.000	2026-10-03 11:53:46	2026-10-03 11:53:46
+128	4	4	128	60.000	10.000	2026-10-03 11:54:45	2026-10-03 11:54:45
+129	4	4	129	80.000	10.000	2026-10-03 11:55:40	2026-10-03 11:55:40
+130	4	4	130	80.000	10.000	2026-10-03 11:56:35	2026-10-03 11:56:35
+131	4	4	131	10.000	1.000	2026-10-03 11:57:38	2026-10-03 11:57:38
+133	4	4	133	9.000	5.000	2026-10-03 12:05:45	2026-10-03 12:05:45
+134	4	4	134	14.000	3.000	2026-10-03 12:06:49	2026-10-03 12:06:49
+135	4	4	135	5.000	1.000	2026-10-03 12:08:08	2026-10-03 12:08:08
+136	4	4	136	8.000	1.000	2026-10-03 12:09:20	2026-10-03 12:09:20
+137	4	4	137	7.000	1.000	2026-10-03 12:10:49	2026-10-03 12:10:49
+138	4	4	138	50.000	10.000	2026-10-03 12:11:58	2026-10-03 12:11:58
+139	4	4	139	12.000	5.000	2026-10-03 12:13:42	2026-10-03 12:13:42
+140	4	4	140	12.000	3.000	2026-10-03 12:14:19	2026-10-03 12:14:19
+141	4	4	141	12.000	5.000	2026-10-03 12:14:54	2026-10-03 12:14:54
+142	4	4	142	11.000	5.000	2026-10-03 12:15:43	2026-10-03 12:15:43
+143	4	4	143	17.000	10.000	2026-10-03 12:16:33	2026-10-03 12:16:33
+144	4	4	144	3.000	1.000	2026-10-03 12:18:54	2026-10-03 12:18:54
+132	4	4	132	105.000	10.000	2026-10-03 12:00:35	2026-10-03 13:25:28
+95	4	4	95	35.000	10.000	2026-09-25 13:08:13	2026-10-03 13:27:17
+145	4	4	145	4.000	1.000	2026-10-03 13:34:42	2026-10-03 13:34:42
+147	1	7	2	11.000	5.000	2026-10-05 08:14:23	2026-10-05 08:14:23
+146	1	7	1	12.000	10.000	2026-10-05 08:13:54	2026-10-05 08:19:39
+111	1	1	111	1.000	5.000	2026-09-25 18:50:55	2026-10-05 08:20:43
+\.
+
+
+--
+-- Data for Name: tenants; Type: TABLE DATA; Schema: public; Owner: afronovapos
+--
+
+COPY public.tenants (id, name, slug, business_type, phone, email, address, currency, timezone, status, created_at, updated_at, features, trial_ends_at, deleted_at) FROM stdin;
+2	Kompany SiSi LTD	kompany-sisi	Retail	\N	\N	\N	KES	Africa/Nairobi	trial	2026-09-23 09:18:47	2026-09-23 09:25:14	\N	2026-10-07 09:18:47	\N
+5	Toprez Suppliers LTD	toprez-agencies	Wholesale	\N	\N	\N	KES	Africa/Nairobi	trial	2026-09-25 18:21:07	2026-10-03 12:09:07	\N	2026-10-09 18:21:07	\N
+3	Shahani Water Refill	dukani	Wholesale	0700000000	shahani@gmail.com	utawala	KES	Africa/Nairobi	suspended	2026-09-23 10:48:06	2026-10-03 17:51:26	{"pay_on_fulfillment":true}	2026-10-07 10:48:06	2026-10-03 17:51:26
+1	AfroNova shop	An-shop	Retail	\N	\N	\N	KES	Africa/Nairobi	trial	2026-09-22 15:48:13	2026-10-03 17:52:06	{"pay_on_fulfillment":true}	2026-10-06 15:48:13	\N
+6	Shahani Water Refill	shahani	wholesale	0711222333	shahani@gmail.com	Fedha	KES	Africa/Nairobi	trial	2026-10-03 17:53:56	2026-10-03 17:53:56	[]	2026-10-17 17:53:56	\N
+4	Micheni Hardware LTD	mutugi-hardware	Hardware	\N	\N	\N	KES	Africa/Nairobi	trial	2026-09-24 13:11:05	2026-10-05 10:42:19	\N	2026-10-08 13:11:05	\N
+\.
+
+
+--
+-- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: afronovapos
+--
+
+COPY public.users (id, name, email, email_verified_at, password, remember_token, created_at, updated_at, tenant_id, branch_id, phone, is_active, last_login_at, role) FROM stdin;
+7	Rosh Jnr	rosh@gmail.com	\N	$2y$12$Rib1jVtHAqVeJAmnxry8Z.NWD82wvFl0YQufCWMUDNu.0Fhbf24ma	\N	2026-09-25 19:11:06	2026-09-25 19:11:35	1	1	0700000000	t	2026-09-25 19:11:35	cashier
+2	Derrick Wafula	Kompanysisi@gmail.com	\N	$2y$12$rxZDM9Bq9.vNi90WhSH5z.YHjunZ0NCg2jaeoJyXt0nJjy.t48QC.	\N	2026-09-23 09:18:48	2026-09-23 09:25:19	2	\N	0797 519039	t	2026-09-23 09:25:19	owner
+4	Mutugi	mutugi@gmail.com	\N	$2y$12$6qeKByYE7hoGjsyMHhimsuxtOIghPC5An1uHR7V5bO3dS8Iw2KXMe	\N	2026-09-24 11:32:02	2026-09-24 11:32:02	1	1	0700000000	t	\N	cashier
+5	John Mutugi	Mutugijohn500@gmail.com	\N	$2y$12$MQy9hV9P231mldeqhFZ0POtvTQ8EyUV0MZjjATtzxI9oOPj8VqaJC	\N	2026-09-24 13:11:06	2026-10-03 12:04:04	4	\N	0716396110	t	2026-10-03 12:04:04	owner
+6	Kelvin Murangiri	toprezagenciesltd@gmail.com	\N	$2y$12$ApgpLZWtZZpX7Bl.2fSr8enByGW/WSvZQ3PNIrJDrpV7nZwLeY14O	\N	2026-09-25 18:21:08	2026-10-03 12:11:03	5	\N	0741 854959	t	2026-10-03 12:11:03	owner
+3	Dennis Murimi	dmurimi919@gmail.com	\N	$2y$12$oJaC/uc6ynSrBgO6VsLQWO1kz.wFNwV5uetoIZckRMcM4cG7ftHA2	\N	2026-09-23 10:48:06	2026-10-03 17:04:38	3	\N	0740289746	t	2026-10-03 17:04:38	owner
+8	Shahani	shahani@gmail.com	\N	$2y$12$XvxEsbUnlpYwfL5EE4kWHOLoxgmB.0XiBaXmYHfq.49rQyFRVRQXK	\N	2026-10-03 17:53:56	2026-10-03 17:54:18	6	\N	0711222333	t	2026-10-03 17:54:18	owner
+1	AfroNova	afronova@gmail.com	\N	$2y$12$KG4bOS5o8HDXjHqWO9SKLOmeYitqC1vo4RjRzZ8JxwTxdqgqAe5y.	\N	2026-09-22 15:48:13	2026-10-05 08:16:43	1	\N	0712345678	t	2026-10-05 08:16:43	owner
+\.
+
+
+--
+-- Name: branch_user_id_seq; Type: SEQUENCE SET; Schema: public; Owner: afronovapos
+--
+
+SELECT pg_catalog.setval('public.branch_user_id_seq', 2, true);
+
+
+--
+-- Name: branches_id_seq; Type: SEQUENCE SET; Schema: public; Owner: afronovapos
+--
+
+SELECT pg_catalog.setval('public.branches_id_seq', 7, true);
+
+
+--
+-- Name: categories_id_seq; Type: SEQUENCE SET; Schema: public; Owner: afronovapos
+--
+
+SELECT pg_catalog.setval('public.categories_id_seq', 1, false);
+
+
+--
+-- Name: customer_prices_id_seq; Type: SEQUENCE SET; Schema: public; Owner: afronovapos
+--
+
+SELECT pg_catalog.setval('public.customer_prices_id_seq', 3, true);
+
+
+--
+-- Name: customers_id_seq; Type: SEQUENCE SET; Schema: public; Owner: afronovapos
+--
+
+SELECT pg_catalog.setval('public.customers_id_seq', 3, true);
+
+
+--
+-- Name: expenses_id_seq; Type: SEQUENCE SET; Schema: public; Owner: afronovapos
+--
+
+SELECT pg_catalog.setval('public.expenses_id_seq', 2, true);
+
+
+--
+-- Name: failed_jobs_id_seq; Type: SEQUENCE SET; Schema: public; Owner: afronovapos
+--
+
+SELECT pg_catalog.setval('public.failed_jobs_id_seq', 1, false);
+
+
+--
+-- Name: held_sales_id_seq; Type: SEQUENCE SET; Schema: public; Owner: afronovapos
+--
+
+SELECT pg_catalog.setval('public.held_sales_id_seq', 2, true);
+
+
+--
+-- Name: jobs_id_seq; Type: SEQUENCE SET; Schema: public; Owner: afronovapos
+--
+
+SELECT pg_catalog.setval('public.jobs_id_seq', 1, false);
+
+
+--
+-- Name: migrations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: afronovapos
+--
+
+SELECT pg_catalog.setval('public.migrations_id_seq', 29, true);
+
+
+--
+-- Name: order_items_id_seq; Type: SEQUENCE SET; Schema: public; Owner: afronovapos
+--
+
+SELECT pg_catalog.setval('public.order_items_id_seq', 9, true);
+
+
+--
+-- Name: orders_id_seq; Type: SEQUENCE SET; Schema: public; Owner: afronovapos
+--
+
+SELECT pg_catalog.setval('public.orders_id_seq', 8, true);
+
+
+--
+-- Name: payments_id_seq; Type: SEQUENCE SET; Schema: public; Owner: afronovapos
+--
+
+SELECT pg_catalog.setval('public.payments_id_seq', 4, true);
+
+
+--
+-- Name: personal_access_tokens_id_seq; Type: SEQUENCE SET; Schema: public; Owner: afronovapos
+--
+
+SELECT pg_catalog.setval('public.personal_access_tokens_id_seq', 1, false);
+
+
+--
+-- Name: platform_admins_id_seq; Type: SEQUENCE SET; Schema: public; Owner: afronovapos
+--
+
+SELECT pg_catalog.setval('public.platform_admins_id_seq', 1, true);
+
+
+--
+-- Name: products_id_seq; Type: SEQUENCE SET; Schema: public; Owner: afronovapos
+--
+
+SELECT pg_catalog.setval('public.products_id_seq', 147, true);
+
+
+--
+-- Name: receipts_id_seq; Type: SEQUENCE SET; Schema: public; Owner: afronovapos
+--
+
+SELECT pg_catalog.setval('public.receipts_id_seq', 1, false);
+
+
+--
+-- Name: sale_items_id_seq; Type: SEQUENCE SET; Schema: public; Owner: afronovapos
+--
+
+SELECT pg_catalog.setval('public.sale_items_id_seq', 30, true);
+
+
+--
+-- Name: sales_id_seq; Type: SEQUENCE SET; Schema: public; Owner: afronovapos
+--
+
+SELECT pg_catalog.setval('public.sales_id_seq', 25, true);
+
+
+--
+-- Name: stock_movements_id_seq; Type: SEQUENCE SET; Schema: public; Owner: afronovapos
+--
+
+SELECT pg_catalog.setval('public.stock_movements_id_seq', 189, true);
+
+
+--
+-- Name: stocks_id_seq; Type: SEQUENCE SET; Schema: public; Owner: afronovapos
+--
+
+SELECT pg_catalog.setval('public.stocks_id_seq', 147, true);
+
+
+--
+-- Name: tenants_id_seq; Type: SEQUENCE SET; Schema: public; Owner: afronovapos
+--
+
+SELECT pg_catalog.setval('public.tenants_id_seq', 6, true);
+
+
+--
+-- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: afronovapos
+--
+
+SELECT pg_catalog.setval('public.users_id_seq', 8, true);
+
+
+--
+-- Name: branch_user branch_user_pkey; Type: CONSTRAINT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.branch_user
+    ADD CONSTRAINT branch_user_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: branch_user branch_user_user_id_branch_id_unique; Type: CONSTRAINT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.branch_user
+    ADD CONSTRAINT branch_user_user_id_branch_id_unique UNIQUE (user_id, branch_id);
+
+
+--
+-- Name: branches branches_pkey; Type: CONSTRAINT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.branches
+    ADD CONSTRAINT branches_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: branches branches_tenant_id_code_unique; Type: CONSTRAINT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.branches
+    ADD CONSTRAINT branches_tenant_id_code_unique UNIQUE (tenant_id, code);
+
+
+--
+-- Name: cache_locks cache_locks_pkey; Type: CONSTRAINT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.cache_locks
+    ADD CONSTRAINT cache_locks_pkey PRIMARY KEY (key);
+
+
+--
+-- Name: cache cache_pkey; Type: CONSTRAINT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.cache
+    ADD CONSTRAINT cache_pkey PRIMARY KEY (key);
+
+
+--
+-- Name: categories categories_pkey; Type: CONSTRAINT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.categories
+    ADD CONSTRAINT categories_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: categories categories_tenant_id_name_unique; Type: CONSTRAINT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.categories
+    ADD CONSTRAINT categories_tenant_id_name_unique UNIQUE (tenant_id, name);
+
+
+--
+-- Name: customer_prices customer_prices_customer_id_product_id_unique; Type: CONSTRAINT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.customer_prices
+    ADD CONSTRAINT customer_prices_customer_id_product_id_unique UNIQUE (customer_id, product_id);
+
+
+--
+-- Name: customer_prices customer_prices_pkey; Type: CONSTRAINT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.customer_prices
+    ADD CONSTRAINT customer_prices_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: customers customers_pkey; Type: CONSTRAINT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.customers
+    ADD CONSTRAINT customers_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: expenses expenses_pkey; Type: CONSTRAINT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.expenses
+    ADD CONSTRAINT expenses_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: failed_jobs failed_jobs_pkey; Type: CONSTRAINT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.failed_jobs
+    ADD CONSTRAINT failed_jobs_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: failed_jobs failed_jobs_uuid_unique; Type: CONSTRAINT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.failed_jobs
+    ADD CONSTRAINT failed_jobs_uuid_unique UNIQUE (uuid);
+
+
+--
+-- Name: held_sales held_sales_pkey; Type: CONSTRAINT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.held_sales
+    ADD CONSTRAINT held_sales_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: job_batches job_batches_pkey; Type: CONSTRAINT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.job_batches
+    ADD CONSTRAINT job_batches_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: jobs jobs_pkey; Type: CONSTRAINT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.jobs
+    ADD CONSTRAINT jobs_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: migrations migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.migrations
+    ADD CONSTRAINT migrations_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: order_items order_items_pkey; Type: CONSTRAINT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.order_items
+    ADD CONSTRAINT order_items_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: orders orders_pkey; Type: CONSTRAINT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.orders
+    ADD CONSTRAINT orders_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: password_reset_tokens password_reset_tokens_pkey; Type: CONSTRAINT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.password_reset_tokens
+    ADD CONSTRAINT password_reset_tokens_pkey PRIMARY KEY (email);
+
+
+--
+-- Name: payments payments_pkey; Type: CONSTRAINT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.payments
+    ADD CONSTRAINT payments_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: personal_access_tokens personal_access_tokens_pkey; Type: CONSTRAINT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.personal_access_tokens
+    ADD CONSTRAINT personal_access_tokens_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: personal_access_tokens personal_access_tokens_token_unique; Type: CONSTRAINT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.personal_access_tokens
+    ADD CONSTRAINT personal_access_tokens_token_unique UNIQUE (token);
+
+
+--
+-- Name: platform_admins platform_admins_email_unique; Type: CONSTRAINT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.platform_admins
+    ADD CONSTRAINT platform_admins_email_unique UNIQUE (email);
+
+
+--
+-- Name: platform_admins platform_admins_pkey; Type: CONSTRAINT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.platform_admins
+    ADD CONSTRAINT platform_admins_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: products products_pkey; Type: CONSTRAINT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.products
+    ADD CONSTRAINT products_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: products products_tenant_id_sku_unique; Type: CONSTRAINT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.products
+    ADD CONSTRAINT products_tenant_id_sku_unique UNIQUE (tenant_id, sku);
+
+
+--
+-- Name: receipts receipts_pkey; Type: CONSTRAINT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.receipts
+    ADD CONSTRAINT receipts_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: receipts receipts_tenant_id_receipt_number_unique; Type: CONSTRAINT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.receipts
+    ADD CONSTRAINT receipts_tenant_id_receipt_number_unique UNIQUE (tenant_id, receipt_number);
+
+
+--
+-- Name: sale_items sale_items_pkey; Type: CONSTRAINT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.sale_items
+    ADD CONSTRAINT sale_items_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: sales sales_pkey; Type: CONSTRAINT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.sales
+    ADD CONSTRAINT sales_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: sales sales_tenant_id_invoice_number_unique; Type: CONSTRAINT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.sales
+    ADD CONSTRAINT sales_tenant_id_invoice_number_unique UNIQUE (tenant_id, invoice_number);
+
+
+--
+-- Name: sessions sessions_pkey; Type: CONSTRAINT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.sessions
+    ADD CONSTRAINT sessions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: stock_movements stock_movements_pkey; Type: CONSTRAINT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.stock_movements
+    ADD CONSTRAINT stock_movements_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: stocks stocks_branch_id_product_id_unique; Type: CONSTRAINT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.stocks
+    ADD CONSTRAINT stocks_branch_id_product_id_unique UNIQUE (branch_id, product_id);
+
+
+--
+-- Name: stocks stocks_pkey; Type: CONSTRAINT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.stocks
+    ADD CONSTRAINT stocks_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: tenants tenants_pkey; Type: CONSTRAINT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.tenants
+    ADD CONSTRAINT tenants_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: tenants tenants_slug_unique; Type: CONSTRAINT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.tenants
+    ADD CONSTRAINT tenants_slug_unique UNIQUE (slug);
+
+
+--
+-- Name: users users_email_unique; Type: CONSTRAINT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_email_unique UNIQUE (email);
+
+
+--
+-- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: users users_tenant_id_email_unique; Type: CONSTRAINT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_tenant_id_email_unique UNIQUE (tenant_id, email);
+
+
+--
+-- Name: cache_expiration_index; Type: INDEX; Schema: public; Owner: afronovapos
+--
+
+CREATE INDEX cache_expiration_index ON public.cache USING btree (expiration);
+
+
+--
+-- Name: cache_locks_expiration_index; Type: INDEX; Schema: public; Owner: afronovapos
+--
+
+CREATE INDEX cache_locks_expiration_index ON public.cache_locks USING btree (expiration);
+
+
+--
+-- Name: customers_tenant_id_phone_index; Type: INDEX; Schema: public; Owner: afronovapos
+--
+
+CREATE INDEX customers_tenant_id_phone_index ON public.customers USING btree (tenant_id, phone);
+
+
+--
+-- Name: expenses_tenant_id_branch_id_paid_at_index; Type: INDEX; Schema: public; Owner: afronovapos
+--
+
+CREATE INDEX expenses_tenant_id_branch_id_paid_at_index ON public.expenses USING btree (tenant_id, branch_id, paid_at);
+
+
+--
+-- Name: expenses_tenant_id_category_index; Type: INDEX; Schema: public; Owner: afronovapos
+--
+
+CREATE INDEX expenses_tenant_id_category_index ON public.expenses USING btree (tenant_id, category);
+
+
+--
+-- Name: failed_jobs_connection_queue_failed_at_index; Type: INDEX; Schema: public; Owner: afronovapos
+--
+
+CREATE INDEX failed_jobs_connection_queue_failed_at_index ON public.failed_jobs USING btree (connection, queue, failed_at);
+
+
+--
+-- Name: held_sales_tenant_id_branch_id_index; Type: INDEX; Schema: public; Owner: afronovapos
+--
+
+CREATE INDEX held_sales_tenant_id_branch_id_index ON public.held_sales USING btree (tenant_id, branch_id);
+
+
+--
+-- Name: jobs_queue_index; Type: INDEX; Schema: public; Owner: afronovapos
+--
+
+CREATE INDEX jobs_queue_index ON public.jobs USING btree (queue);
+
+
+--
+-- Name: orders_tenant_id_branch_id_status_index; Type: INDEX; Schema: public; Owner: afronovapos
+--
+
+CREATE INDEX orders_tenant_id_branch_id_status_index ON public.orders USING btree (tenant_id, branch_id, status);
+
+
+--
+-- Name: payments_payment_method_paid_at_index; Type: INDEX; Schema: public; Owner: afronovapos
+--
+
+CREATE INDEX payments_payment_method_paid_at_index ON public.payments USING btree (payment_method, paid_at);
+
+
+--
+-- Name: payments_sale_id_paid_at_index; Type: INDEX; Schema: public; Owner: afronovapos
+--
+
+CREATE INDEX payments_sale_id_paid_at_index ON public.payments USING btree (sale_id, paid_at);
+
+
+--
+-- Name: payments_tenant_id_customer_id_paid_at_index; Type: INDEX; Schema: public; Owner: afronovapos
+--
+
+CREATE INDEX payments_tenant_id_customer_id_paid_at_index ON public.payments USING btree (tenant_id, customer_id, paid_at);
+
+
+--
+-- Name: personal_access_tokens_expires_at_index; Type: INDEX; Schema: public; Owner: afronovapos
+--
+
+CREATE INDEX personal_access_tokens_expires_at_index ON public.personal_access_tokens USING btree (expires_at);
+
+
+--
+-- Name: personal_access_tokens_tokenable_type_tokenable_id_index; Type: INDEX; Schema: public; Owner: afronovapos
+--
+
+CREATE INDEX personal_access_tokens_tokenable_type_tokenable_id_index ON public.personal_access_tokens USING btree (tokenable_type, tokenable_id);
+
+
+--
+-- Name: products_tenant_id_barcode_index; Type: INDEX; Schema: public; Owner: afronovapos
+--
+
+CREATE INDEX products_tenant_id_barcode_index ON public.products USING btree (tenant_id, barcode);
+
+
+--
+-- Name: receipts_sale_id_delivery_method_index; Type: INDEX; Schema: public; Owner: afronovapos
+--
+
+CREATE INDEX receipts_sale_id_delivery_method_index ON public.receipts USING btree (sale_id, delivery_method);
+
+
+--
+-- Name: sale_items_sale_id_product_id_index; Type: INDEX; Schema: public; Owner: afronovapos
+--
+
+CREATE INDEX sale_items_sale_id_product_id_index ON public.sale_items USING btree (sale_id, product_id);
+
+
+--
+-- Name: sales_tenant_id_branch_id_sold_at_index; Type: INDEX; Schema: public; Owner: afronovapos
+--
+
+CREATE INDEX sales_tenant_id_branch_id_sold_at_index ON public.sales USING btree (tenant_id, branch_id, sold_at);
+
+
+--
+-- Name: sales_tenant_id_customer_id_payment_status_index; Type: INDEX; Schema: public; Owner: afronovapos
+--
+
+CREATE INDEX sales_tenant_id_customer_id_payment_status_index ON public.sales USING btree (tenant_id, customer_id, payment_status);
+
+
+--
+-- Name: sessions_last_activity_index; Type: INDEX; Schema: public; Owner: afronovapos
+--
+
+CREATE INDEX sessions_last_activity_index ON public.sessions USING btree (last_activity);
+
+
+--
+-- Name: sessions_user_id_index; Type: INDEX; Schema: public; Owner: afronovapos
+--
+
+CREATE INDEX sessions_user_id_index ON public.sessions USING btree (user_id);
+
+
+--
+-- Name: stock_movements_product_id_created_at_index; Type: INDEX; Schema: public; Owner: afronovapos
+--
+
+CREATE INDEX stock_movements_product_id_created_at_index ON public.stock_movements USING btree (product_id, created_at);
+
+
+--
+-- Name: stock_movements_reference_type_reference_id_index; Type: INDEX; Schema: public; Owner: afronovapos
+--
+
+CREATE INDEX stock_movements_reference_type_reference_id_index ON public.stock_movements USING btree (reference_type, reference_id);
+
+
+--
+-- Name: stock_movements_tenant_id_branch_id_index; Type: INDEX; Schema: public; Owner: afronovapos
+--
+
+CREATE INDEX stock_movements_tenant_id_branch_id_index ON public.stock_movements USING btree (tenant_id, branch_id);
+
+
+--
+-- Name: branch_user branch_user_branch_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.branch_user
+    ADD CONSTRAINT branch_user_branch_id_foreign FOREIGN KEY (branch_id) REFERENCES public.branches(id) ON DELETE CASCADE;
+
+
+--
+-- Name: branch_user branch_user_user_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.branch_user
+    ADD CONSTRAINT branch_user_user_id_foreign FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE CASCADE;
+
+
+--
+-- Name: branches branches_tenant_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.branches
+    ADD CONSTRAINT branches_tenant_id_foreign FOREIGN KEY (tenant_id) REFERENCES public.tenants(id) ON DELETE RESTRICT;
+
+
+--
+-- Name: categories categories_tenant_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.categories
+    ADD CONSTRAINT categories_tenant_id_foreign FOREIGN KEY (tenant_id) REFERENCES public.tenants(id) ON DELETE RESTRICT;
+
+
+--
+-- Name: customer_prices customer_prices_customer_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.customer_prices
+    ADD CONSTRAINT customer_prices_customer_id_foreign FOREIGN KEY (customer_id) REFERENCES public.customers(id) ON DELETE CASCADE;
+
+
+--
+-- Name: customer_prices customer_prices_product_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.customer_prices
+    ADD CONSTRAINT customer_prices_product_id_foreign FOREIGN KEY (product_id) REFERENCES public.products(id) ON DELETE CASCADE;
+
+
+--
+-- Name: customer_prices customer_prices_tenant_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.customer_prices
+    ADD CONSTRAINT customer_prices_tenant_id_foreign FOREIGN KEY (tenant_id) REFERENCES public.tenants(id) ON DELETE RESTRICT;
+
+
+--
+-- Name: customers customers_tenant_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.customers
+    ADD CONSTRAINT customers_tenant_id_foreign FOREIGN KEY (tenant_id) REFERENCES public.tenants(id) ON DELETE RESTRICT;
+
+
+--
+-- Name: expenses expenses_branch_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.expenses
+    ADD CONSTRAINT expenses_branch_id_foreign FOREIGN KEY (branch_id) REFERENCES public.branches(id) ON DELETE SET NULL;
+
+
+--
+-- Name: expenses expenses_recorded_by_foreign; Type: FK CONSTRAINT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.expenses
+    ADD CONSTRAINT expenses_recorded_by_foreign FOREIGN KEY (recorded_by) REFERENCES public.users(id) ON DELETE CASCADE;
+
+
+--
+-- Name: expenses expenses_tenant_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.expenses
+    ADD CONSTRAINT expenses_tenant_id_foreign FOREIGN KEY (tenant_id) REFERENCES public.tenants(id) ON DELETE CASCADE;
+
+
+--
+-- Name: held_sales held_sales_branch_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.held_sales
+    ADD CONSTRAINT held_sales_branch_id_foreign FOREIGN KEY (branch_id) REFERENCES public.branches(id) ON DELETE CASCADE;
+
+
+--
+-- Name: held_sales held_sales_customer_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.held_sales
+    ADD CONSTRAINT held_sales_customer_id_foreign FOREIGN KEY (customer_id) REFERENCES public.customers(id) ON DELETE SET NULL;
+
+
+--
+-- Name: held_sales held_sales_held_by_foreign; Type: FK CONSTRAINT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.held_sales
+    ADD CONSTRAINT held_sales_held_by_foreign FOREIGN KEY (held_by) REFERENCES public.users(id) ON DELETE CASCADE;
+
+
+--
+-- Name: held_sales held_sales_tenant_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.held_sales
+    ADD CONSTRAINT held_sales_tenant_id_foreign FOREIGN KEY (tenant_id) REFERENCES public.tenants(id) ON DELETE CASCADE;
+
+
+--
+-- Name: order_items order_items_order_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.order_items
+    ADD CONSTRAINT order_items_order_id_foreign FOREIGN KEY (order_id) REFERENCES public.orders(id) ON DELETE CASCADE;
+
+
+--
+-- Name: order_items order_items_product_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.order_items
+    ADD CONSTRAINT order_items_product_id_foreign FOREIGN KEY (product_id) REFERENCES public.products(id) ON DELETE RESTRICT;
+
+
+--
+-- Name: orders orders_branch_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.orders
+    ADD CONSTRAINT orders_branch_id_foreign FOREIGN KEY (branch_id) REFERENCES public.branches(id) ON DELETE RESTRICT;
+
+
+--
+-- Name: orders orders_customer_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.orders
+    ADD CONSTRAINT orders_customer_id_foreign FOREIGN KEY (customer_id) REFERENCES public.customers(id) ON DELETE SET NULL;
+
+
+--
+-- Name: orders orders_placed_by_foreign; Type: FK CONSTRAINT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.orders
+    ADD CONSTRAINT orders_placed_by_foreign FOREIGN KEY (placed_by) REFERENCES public.users(id) ON DELETE RESTRICT;
+
+
+--
+-- Name: orders orders_sale_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.orders
+    ADD CONSTRAINT orders_sale_id_foreign FOREIGN KEY (sale_id) REFERENCES public.sales(id) ON DELETE SET NULL;
+
+
+--
+-- Name: orders orders_tenant_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.orders
+    ADD CONSTRAINT orders_tenant_id_foreign FOREIGN KEY (tenant_id) REFERENCES public.tenants(id) ON DELETE RESTRICT;
+
+
+--
+-- Name: payments payments_customer_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.payments
+    ADD CONSTRAINT payments_customer_id_foreign FOREIGN KEY (customer_id) REFERENCES public.customers(id) ON DELETE RESTRICT;
+
+
+--
+-- Name: payments payments_received_by_foreign; Type: FK CONSTRAINT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.payments
+    ADD CONSTRAINT payments_received_by_foreign FOREIGN KEY (received_by) REFERENCES public.users(id) ON DELETE RESTRICT;
+
+
+--
+-- Name: payments payments_sale_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.payments
+    ADD CONSTRAINT payments_sale_id_foreign FOREIGN KEY (sale_id) REFERENCES public.sales(id) ON DELETE RESTRICT;
+
+
+--
+-- Name: payments payments_tenant_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.payments
+    ADD CONSTRAINT payments_tenant_id_foreign FOREIGN KEY (tenant_id) REFERENCES public.tenants(id) ON DELETE RESTRICT;
+
+
+--
+-- Name: products products_category_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.products
+    ADD CONSTRAINT products_category_id_foreign FOREIGN KEY (category_id) REFERENCES public.categories(id) ON DELETE SET NULL;
+
+
+--
+-- Name: products products_tenant_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.products
+    ADD CONSTRAINT products_tenant_id_foreign FOREIGN KEY (tenant_id) REFERENCES public.tenants(id) ON DELETE RESTRICT;
+
+
+--
+-- Name: receipts receipts_sale_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.receipts
+    ADD CONSTRAINT receipts_sale_id_foreign FOREIGN KEY (sale_id) REFERENCES public.sales(id) ON DELETE RESTRICT;
+
+
+--
+-- Name: receipts receipts_tenant_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.receipts
+    ADD CONSTRAINT receipts_tenant_id_foreign FOREIGN KEY (tenant_id) REFERENCES public.tenants(id) ON DELETE RESTRICT;
+
+
+--
+-- Name: sale_items sale_items_product_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.sale_items
+    ADD CONSTRAINT sale_items_product_id_foreign FOREIGN KEY (product_id) REFERENCES public.products(id) ON DELETE RESTRICT;
+
+
+--
+-- Name: sale_items sale_items_sale_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.sale_items
+    ADD CONSTRAINT sale_items_sale_id_foreign FOREIGN KEY (sale_id) REFERENCES public.sales(id) ON DELETE CASCADE;
+
+
+--
+-- Name: sales sales_branch_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.sales
+    ADD CONSTRAINT sales_branch_id_foreign FOREIGN KEY (branch_id) REFERENCES public.branches(id) ON DELETE RESTRICT;
+
+
+--
+-- Name: sales sales_customer_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.sales
+    ADD CONSTRAINT sales_customer_id_foreign FOREIGN KEY (customer_id) REFERENCES public.customers(id) ON DELETE RESTRICT;
+
+
+--
+-- Name: sales sales_sold_by_foreign; Type: FK CONSTRAINT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.sales
+    ADD CONSTRAINT sales_sold_by_foreign FOREIGN KEY (sold_by) REFERENCES public.users(id) ON DELETE RESTRICT;
+
+
+--
+-- Name: sales sales_tenant_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.sales
+    ADD CONSTRAINT sales_tenant_id_foreign FOREIGN KEY (tenant_id) REFERENCES public.tenants(id) ON DELETE RESTRICT;
+
+
+--
+-- Name: stock_movements stock_movements_branch_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.stock_movements
+    ADD CONSTRAINT stock_movements_branch_id_foreign FOREIGN KEY (branch_id) REFERENCES public.branches(id) ON DELETE RESTRICT;
+
+
+--
+-- Name: stock_movements stock_movements_created_by_foreign; Type: FK CONSTRAINT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.stock_movements
+    ADD CONSTRAINT stock_movements_created_by_foreign FOREIGN KEY (created_by) REFERENCES public.users(id) ON DELETE SET NULL;
+
+
+--
+-- Name: stock_movements stock_movements_product_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.stock_movements
+    ADD CONSTRAINT stock_movements_product_id_foreign FOREIGN KEY (product_id) REFERENCES public.products(id) ON DELETE RESTRICT;
+
+
+--
+-- Name: stock_movements stock_movements_tenant_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.stock_movements
+    ADD CONSTRAINT stock_movements_tenant_id_foreign FOREIGN KEY (tenant_id) REFERENCES public.tenants(id) ON DELETE RESTRICT;
+
+
+--
+-- Name: stocks stocks_branch_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.stocks
+    ADD CONSTRAINT stocks_branch_id_foreign FOREIGN KEY (branch_id) REFERENCES public.branches(id) ON DELETE RESTRICT;
+
+
+--
+-- Name: stocks stocks_product_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.stocks
+    ADD CONSTRAINT stocks_product_id_foreign FOREIGN KEY (product_id) REFERENCES public.products(id) ON DELETE RESTRICT;
+
+
+--
+-- Name: stocks stocks_tenant_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.stocks
+    ADD CONSTRAINT stocks_tenant_id_foreign FOREIGN KEY (tenant_id) REFERENCES public.tenants(id) ON DELETE RESTRICT;
+
+
+--
+-- Name: users users_branch_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_branch_id_foreign FOREIGN KEY (branch_id) REFERENCES public.branches(id) ON DELETE SET NULL;
+
+
+--
+-- Name: users users_tenant_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: afronovapos
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_tenant_id_foreign FOREIGN KEY (tenant_id) REFERENCES public.tenants(id) ON DELETE RESTRICT;
+
+
+--
+-- PostgreSQL database dump complete
+--
+
+\unrestrict Y52HQDExLGXfJiwhRhUqynhEmA1szcLiZpP2bFJYgEaG4qf7f6PEWxbSgLXOP9Y
+

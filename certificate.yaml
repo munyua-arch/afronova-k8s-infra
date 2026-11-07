@@ -1,0 +1,9 @@
+apiVersion: networking.gke.io/v1
+kind: ManagedCertificate
+metadata:
+  name: afronova-staging-cert
+  namespace: staging
+spec:
+  domains:
+    - staging.maskanike.com
+    - pos.afronova.co.ke

@@ -1,0 +1,101 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: afronova-postgres-secret
+  namespace: afronova
+type: Opaque
+stringData:
+  POSTGRES_USER: afronovapos
+  POSTGRES_PASSWORD: afronovaautomations
+  POSTGRES_DB: afronovapos
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: afronova-postgres
+  namespace: afronova
+  labels:
+    app: afronova-postgres
+spec:
+  clusterIP: None
+  selector:
+    app: afronova-postgres
+  ports:
+    - name: postgres
+      port: 5432
+      targetPort: 5432
+
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: afronova-postgres
+  namespace: afronova
+spec:
+  serviceName: afronova-postgres
+  replicas: 1
+  selector:
+    matchLabels:
+      app: afronova-postgres
+  template:
+    metadata:
+      labels:
+        app: afronova-postgres
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:17.11
+          ports:
+            - name: postgres
+              containerPort: 5432
+          env:
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: afronova-postgres-secret
+                  key: POSTGRES_USER
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: afronova-postgres-secret
+                  key: POSTGRES_PASSWORD
+            - name: POSTGRES_DB
+              valueFrom:
+                secretKeyRef:
+                  name: afronova-postgres-secret
+                  key: POSTGRES_DB
+
+            - name: PGDATA
+              value: /var/lib/postgresql/data/pgdata
+              
+          volumeMounts:
+            - name: postgres-data
+              mountPath: /var/lib/postgresql/data
+          readinessProbe:
+            exec:
+              command:
+                - sh
+                - -c
+                - pg_isready -U "$POSTGRES_USER" -d "$POSTGRES_DB"
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          livenessProbe:
+            exec:
+              command:
+                - sh
+                - -c
+                - pg_isready -U "$POSTGRES_USER" -d "$POSTGRES_DB"
+            initialDelaySeconds: 30
+            periodSeconds: 20
+
+  volumeClaimTemplates:
+    - metadata:
+        name: postgres-data
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        storageClassName: local-path
+        resources:
+          requests:
+            storage: 10Gi

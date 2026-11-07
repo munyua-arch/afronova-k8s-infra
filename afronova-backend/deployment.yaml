@@ -1,0 +1,155 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: afronova-backend
+  namespace: afronova
+  labels:
+    app: afronova-backend
+
+spec:
+  replicas: 1
+
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
+
+  selector:
+    matchLabels:
+      app: afronova-backend
+
+  template:
+    metadata:
+      labels:
+        app: afronova-backend
+
+    spec:
+      imagePullSecrets:
+        - name: munyua-arch-ghcr-secret
+
+      containers:
+        - name: afronova-backend
+          image: ghcr.io/munyua-arch/afronova-backend:v1.5.1
+          imagePullPolicy: Always
+
+          ports:
+            - name: http
+              containerPort: 80
+
+          env:
+            - name: APP_ENV
+              value: "production"
+
+            - name: APP_DEBUG
+              value: "false"
+            
+            - name: MAIL_MAILER
+              value: "resend"
+
+            - name: MAIL_FROM_ADDRESS
+              value: "noreply@afronova.co.ke"
+
+            - name: MAIL_FROM_NAME
+              value: "AfroNova"
+
+            - name: APP_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: afronova-backend-secret
+                  key: APP_KEY
+
+            - name: RESEND_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: afronova-backend-secret
+                  key: RESEND_API_KEY
+
+            - name: APP_URL
+              value: "https://pos.afronova.co.ke"
+
+            - name: APP_FRONTEND_URL
+              value: "https://pos.afronova.co.ke"
+
+            - name: DB_CONNECTION
+              value: "pgsql"
+
+            - name: DB_HOST
+              value: "afronova-postgres"
+
+            - name: DB_PORT
+              value: "5432"
+
+            - name: DB_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: afronova-postgres-secret
+                  key: POSTGRES_DB
+
+            - name: DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: afronova-postgres-secret
+                  key: POSTGRES_USER
+
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: afronova-postgres-secret
+                  key: POSTGRES_PASSWORD
+
+            - name: SESSION_DRIVER
+              value: "database"
+
+            - name: SESSION_DOMAIN
+              value: "pos.afronova.co.ke"
+
+            - name: SESSION_SECURE_COOKIE
+              value: "true"
+
+            - name: SESSION_LIFETIME
+              value: "120"
+
+            - name: SESSION_ENCRYPT
+              value: "false"
+
+            - name: SESSION_PATH
+              value: "/"
+
+            - name: SANCTUM_STATEFUL_DOMAINS
+              value: "pos.afronova.co.ke"
+
+            - name: CACHE_STORE
+              value: "database"
+
+            - name: QUEUE_CONNECTION
+              value: "database"
+
+            - name: LOG_CHANNEL
+              value: "stderr"
+
+            - name: LOG_LEVEL
+              value: "info"
+
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+
+          readinessProbe:
+            httpGet:
+              path: /up
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 10
+
+          livenessProbe:
+            httpGet:
+              path: /up
+              port: http
+            initialDelaySeconds: 30
+            periodSeconds: 20
